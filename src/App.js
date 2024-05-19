@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import clsx from "clsx";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import FooterContainer from "./components/Footer/FooterContainer";
+
+const tele = window.Telegram.WebApp;
 
 function App() {
+  useEffect(() => {
+    tele.ready();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className={clsx("app", "bg-gradient-to-r from-[#140634] to-[#57285e]")}
+    >
+      <main>
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+        </Routes>
+      </main>
+      <FooterContainer />
     </div>
   );
 }
