@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import FooterContainer from "./components/Footer/FooterContainer";
+import { BackGroundColor } from "./config/colors";
+import RefPage from "./pages/RefPage";
+import TaskPage from "./pages/TaskPage";
+import TapPage from "./pages/TapPage";
+import BoostPage from "./pages/BoostPage";
+import StatsPage from "./pages/StatsPage";
 
 const tele = window.Telegram.WebApp;
 
@@ -13,11 +18,15 @@ function App() {
 
   return (
     <div
-      className={clsx("app", "bg-gradient-to-tr from-[#140634] to-[#57285e]")}
+      className={clsx("app", BackGroundColor)}
     >
       <main>
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/ref" exact element={<RefPage />} />
+          <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/tap" exact element={<TapPage />} />
+          <Route path="/boost" exact element={<BoostPage />} />
+          <Route path="/stats" exact element={<StatsPage />} />
         </Routes>
       </main>
       <FooterContainer />

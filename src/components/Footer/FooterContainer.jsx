@@ -1,37 +1,17 @@
 import React from "react";
 import LinkContainer from "./LinkContainer";
-
-const data = [
-  {
-    icon: "dferfr",
-    name: "Ref",
-    link:"/friends"
-  },
-  {
-    icon: "dferfr",
-    name: "Task",
-    link:"/task"
-  },
-  {
-    icon: "dferfr",
-    name: "Tap",
-    link:"/tap"
-  },
-  {
-    icon: "dferfr",
-    name: "Ref",
-  },
-  {
-    icon: "dferfr",
-    name: "Ref",
-  },
-];
+import { data } from "../../config/SiteLink";
 
 const FooterContainer = () => {
   return (
-    <footer className="flex gap-4 justify-center">
+    <footer className="flex sm:gap-4 xs:gap-3 gap-2 justify-center">
       {data.map((item, index) => (
-        <LinkContainer key={index} icon={item.icon} name={item.name} href={item.link} />
+        <LinkContainer
+          key={index}
+          src={item.src}
+          name={item.name}
+          href={item.link}
+        />
       ))}
     </footer>
   );
