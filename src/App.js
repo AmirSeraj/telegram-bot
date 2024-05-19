@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import clsx from "clsx";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FooterContainer from "./components/Footer/FooterContainer";
 import { BackGroundColor } from "./config/colors";
 import RefPage from "./pages/RefPage";
@@ -17,13 +17,12 @@ function App() {
   }, []);
 
   return (
-    <div
-      className={clsx("app", BackGroundColor)}
-    >
-      <main>
+    <div className={clsx("app", BackGroundColor)}>
+      <main className="w-full h-full">
         <Routes>
           <Route path="/ref" exact element={<RefPage />} />
           <Route path="/task" exact element={<TaskPage />} />
+          <Route path="/" element={<Navigate to="/tap" replace />} />
           <Route path="/tap" exact element={<TapPage />} />
           <Route path="/boost" exact element={<BoostPage />} />
           <Route path="/stats" exact element={<StatsPage />} />
