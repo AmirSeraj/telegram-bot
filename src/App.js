@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div
-      className={clsx("app", "bg-gradient-to-r from-[#140634] to-[#57285e]")}
+      className={clsx("app", "bg-gradient-to-tr from-[#140634] to-[#57285e]")}
     >
       <main>
         <Routes>

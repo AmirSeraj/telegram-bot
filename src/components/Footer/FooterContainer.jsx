@@ -5,14 +5,17 @@ const data = [
   {
     icon: "dferfr",
     name: "Ref",
+    link:"/friends"
   },
   {
     icon: "dferfr",
-    name: "Ref",
+    name: "Task",
+    link:"/task"
   },
   {
     icon: "dferfr",
-    name: "Ref",
+    name: "Tap",
+    link:"/tap"
   },
   {
     icon: "dferfr",
@@ -26,9 +29,9 @@ const data = [
 
 const FooterContainer = () => {
   return (
-    <footer className="flex gap-2">
+    <footer className="flex gap-4 justify-center">
       {data.map((item, index) => (
-        <LinkContainer key={index} icon={item.icon} name={item.name} />
+        <LinkContainer key={index} icon={item.icon} name={item.name} href={item.link} />
       ))}
     </footer>
   );
