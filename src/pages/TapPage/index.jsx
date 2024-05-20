@@ -3,6 +3,7 @@ import "./styles.css";
 import CoinNum from "../../components/Tap/CoinNum";
 import CoinIcon from "../../components/Tap/CoinIcon";
 import ScoreBar from "../../components/Tap/ScoreBar";
+import FooterContainer from "../../components/Footer/FooterContainer";
 
 const Home = () => {
   const balanceRef = useRef({ value: 0 });
@@ -11,7 +12,7 @@ const Home = () => {
     initialSparkRef.current.value
   );
 
-  const increment = +3;
+  const increment = +3; ///this will be changed when change sth, in another words, this will be read from database
   const forceUpdate = useReducer((x) => x + 1, 0)[1];
 
   // assume /**later these two numbers should be read from database */
@@ -36,7 +37,7 @@ const Home = () => {
   };
 
   return (
-    <div className={"w-full h-full text-white relative"}>
+    <div className="main--container">
       <div className="container" />
       <div className="w-full h-full flex flex-col items-center px-3 py-7">
         <CoinNum balance={balanceRef.current.value} />
@@ -52,7 +53,9 @@ const Home = () => {
           currentSpark={currentSpark}
           setCurrentSpark={setCurrentSpark}
         />
+        <FooterContainer />
       </div>
+      
     </div>
   );
 };

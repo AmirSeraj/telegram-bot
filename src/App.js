@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import { Navigate, Route, Routes } from "react-router-dom";
-import FooterContainer from "./components/Footer/FooterContainer";
-import { BackGroundColor } from "./config/colors";
+// import FooterContainer from "./components/Footer/FooterContainer";
+// import { BackGroundColor } from "./config/colors";
 import RefPage from "./pages/RefPage";
 import TaskPage from "./pages/TaskPage";
 import TapPage from "./pages/TapPage";
@@ -15,9 +15,9 @@ function App() {
   useEffect(() => {
     tele.ready();
   }, []);
-
+  // BackGroundColor
   return (
-    <div className={clsx("app", BackGroundColor)}>
+    <div className="app">
       <main className="w-full h-full">
         <Routes>
           <Route path="/ref" exact element={<RefPage />} />
@@ -28,7 +28,6 @@ function App() {
           <Route path="/stats" exact element={<StatsPage />} />
         </Routes>
       </main>
-      <FooterContainer />
     </div>
   );
 }

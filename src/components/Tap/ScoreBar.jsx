@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { BsLightningFill } from "react-icons/bs";
 
 const ScoreBar = ({ incrementSparkNumber, maxLimitSpark, currentSpark, setCurrentSpark }) => {
-  // const [currentSpark, setCurrentSpark] = useState(initialSparkRef);
   useEffect(() => {
     if (currentSpark < maxLimitSpark) {
       const interval = setInterval(() => {
