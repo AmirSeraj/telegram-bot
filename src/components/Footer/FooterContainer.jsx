@@ -7,7 +7,7 @@ const FooterContainer = () => {
     <footer className="flex sm:gap-4 xs:gap-3 gap-2 justify-center">
       {data.map((item, index) => (
         <LinkContainer
-          key={index}
+          link_index={index}
           src={item.src}
           name={item.name}
           href={item.link}

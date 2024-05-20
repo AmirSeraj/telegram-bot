@@ -1,18 +1,40 @@
-import { Slider } from "@material-tailwind/react";
+import clsx from "clsx";
+import { useEffect } from "react";
 import { BsLightningFill } from "react-icons/bs";
 
-const ScoreBar = ({coinNum}) => {
-  return (
-    <div className='flex flex-col gap-1 items-center justify-center'>
-        <div className="flex gap-2 justify-center items-center">
-            <BsLightningFill color="yellow" />
-            <span className="text-white text-2xl">{coinNum}</span> / 1500       
-        </div>
-        <div className="w-96">
-            <Slider defaultValue={60} size="md" color="amber" />
-        </div>
-    </div>
-  )
-}
+const ScoreBar = ({ incrementSparkNumber, maxLimitSpark, currentSpark, setCurrentSpark }) => {
+  // const [currentSpark, setCurrentSpark] = useState(initialSparkRef);
+  useEffect(() => {
+    if (currentSpark < maxLimitSpark) {
+      const interval = setInterval(() => {
+        setCurrentSpark((prevSpark) => {
+          const newSpark = prevSpark + incrementSparkNumber;
+          if (newSpark >= maxLimitSpark) {
+            clearInterval(interval);
+            return maxLimitSpark;
+          }
+          return newSpark;
+        });
+      }, 2000); // Increase every second
 
-export default ScoreBar
+      return () => clearInterval(interval); // Cleanup interval on component unmount
+    }
+  }, [currentSpark, maxLimitSpark, incrementSparkNumber, setCurrentSpark]);
+
+  const progressPercentage = (currentSpark / maxLimitSpark) * 100;
+
+  return (
+    <div className="flex flex-col gap-1 items-center justify-center w-full xs:px-6 px-2">
+      <div className="flex gap-2 justify-center items-center">
+        <BsLightningFill color="yellow" />
+        <span className="text-white text-2xl">{currentSpark}</span> /{" "}
+        {maxLimitSpark}
+      </div>
+      <div className="w-full h-2 rounded-full bg-white shadow-lg overflow-hidden">
+        <div className={clsx("bg-yellow-400 h-full overflow-hidden")} style={{ width: `${progressPercentage}%` }} />
+      </div>
+    </div>
+  );
+};
+
+export default ScoreBar;
