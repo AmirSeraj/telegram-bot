@@ -2,7 +2,12 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import { BsLightningFill } from "react-icons/bs";
 
-const ScoreBar = ({ incrementSparkNumber, maxLimitSpark, currentSpark, setCurrentSpark }) => {
+const ScoreBar = ({
+  incrementSparkNumber,
+  maxLimitSpark,
+  currentSpark,
+  setCurrentSpark,
+}) => {
   useEffect(() => {
     if (currentSpark < maxLimitSpark) {
       const interval = setInterval(() => {
@@ -30,7 +35,17 @@ const ScoreBar = ({ incrementSparkNumber, maxLimitSpark, currentSpark, setCurren
         {maxLimitSpark}
       </div>
       <div className="w-full h-2 rounded-full bg-white shadow-lg overflow-hidden">
-        <div className={clsx("bg-yellow-400 h-full overflow-hidden")} style={{ width: `${progressPercentage}%` }} />
+        {/* (progressPercentage < 33 ? 'bg-red-600' : 'bg-green-600') */}
+        <div
+          className={clsx(
+            "h-full overflow-hidden",
+            progressPercentage < 33 && "bg-fuchsia-400",
+            (progressPercentage >= 33 && progressPercentage < 66) && 'bg-fuchsia-500',
+            (progressPercentage >= 66 && progressPercentage < 100) && 'bg-fuchsia-600',
+            progressPercentage === 100 && "bg-fuchsia-700",
+          )}
+          style={{ width: `${progressPercentage}%` }}
+        />
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ const LinkContainer = ({ link_index, src, name, href }) => {
       to={href}
       key={link_index}
       className={clsx(
-        "flex flex-col gap-2 sm:p-3 p-2 border-[1px] border-slate-400 bg-[#140634] rounded-md items-center",
-        pathname === name && "border-[1px] border-[gold]/70 bg-[gold]/60"
+        "flex flex-col gap-2 sm:p-3 p-2 border-[1px] border-slate-400 bg-[#140634] rounded-md items-center w-12",
+        pathname === name && "border-[1px] border-[#1F51FF]/70 bg-[#1F51FF]/40"
       )}
     >
       <img src={src} alt={name} />

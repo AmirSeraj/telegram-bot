@@ -18,16 +18,14 @@ function App() {
   // BackGroundColor
   return (
     <div className="app">
-      <main className="w-full h-full">
-        <Routes>
-          <Route path="/ref" exact element={<RefPage />} />
-          <Route path="/task" exact element={<TaskPage />} />
-          <Route path="/" element={<Navigate to="/tap" replace />} />
-          <Route path="/tap" exact element={<TapPage />} />
-          <Route path="/boost" exact element={<BoostPage />} />
-          <Route path="/stats" exact element={<StatsPage />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/ref" exact element={<RefPage />} />
+        <Route path="/task" exact element={<TaskPage />} />
+        <Route path="/" element={<Navigate to="/tap" replace />} />
+        <Route path="/tap" exact element={<TapPage />} />
+        <Route path="/boost" exact element={<BoostPage />} />
+        <Route path="/stats" exact element={<StatsPage />} />
+      </Routes>
     </div>
   );
 }

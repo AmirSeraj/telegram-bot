@@ -61,23 +61,29 @@ const CoinIcon = ({ balanceRef, increment, onCoinClick, currentSpark }) => {
   }, [texts]);
 
   return (
-    <>
-      <img
-        onClick={(e) => {
-          handleClick();
-          handleClickText(e);
-        }}
-        className="cursor-pointer -skew-y-12"
-        src="./images/coin.svg"
-        alt="coin"
-        // style={{ useSele }}
-      />
+    <div className="w-full flex justify-center items-center">
+      <div className="w-[150px] h-[150px] rounded-full relative">
+        <img
+          className="cursor-pointer w-full h-full"
+          src="./images/coin.png"
+          alt="coin"
+        />
+        <div
+          id="LinkArea"
+          onClick={(e) => {
+            handleClick();
+            handleClickText(e);
+          }}
+          className="absolute w-[150px] h-[150px] rounded-full bg-transparent z-20 top-0 right-0"
+        />
+      </div>
       {texts.map((text, index) => (
         <div
           key={index}
           style={{
-            color: "#fff",
-            fontSize: "20px",
+            color: "#c72d70",
+            fontSize: "2rem",
+            fontWeight:"bold",
             position: "absolute",
             top: text.position.y - 30,
             left: text.position.x - 16,
@@ -91,7 +97,7 @@ const CoinIcon = ({ balanceRef, increment, onCoinClick, currentSpark }) => {
           {text.value}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
