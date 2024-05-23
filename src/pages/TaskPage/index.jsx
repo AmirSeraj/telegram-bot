@@ -1,12 +1,62 @@
 import RootLayout from "../../components/Layout";
 import bgImg from "../../assets/bg_images/bg-3.png";
 import Balance from "../../components/Balance";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Tab from "../../components/Task/Tab";
+import Special from "../../components/Task/Special";
+import Leagues from "../../components/Task/Leagues";
+import RefTasks from "../../components/Task/RefTasks";
+import Loading from "../../components/Loading";
 
 const TaskPage = () => {
   const [special, setSpecial] = useState(false);
   const [league, setLeague] = useState(false);
-  const [tasks, setTasks] = useState(false);
+  const [refTasks, setRefTasks] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getTasks_Specials = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("fetch_get_all_tasks_specials", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      const tasks = await response.json();
+      setTasks(tasks);
+      setLoading(false);
+      return tasks;
+    } catch (error) {
+      setLoading(false);
+      console.log("error2", error);
+    }
+  };
+
+  useEffect(() => {
+    setSpecial(true);
+    getTasks_Specials();
+  }, []);
+
+  const handleActiveTab = (val) => {
+    if (val === "special") {
+      setSpecial(true);
+      setLeague(false);
+      setRefTasks(false);
+    }
+    if (val === "leagues") {
+      setSpecial(false);
+      setLeague(true);
+      setRefTasks(false);
+    }
+    if (val === "ref_tasks") {
+      setSpecial(false);
+      setLeague(false);
+      setRefTasks(true);
+    }
+  };
 
   return (
     <RootLayout
@@ -15,18 +65,43 @@ const TaskPage = () => {
       //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
       // }
     >
-      <Balance
-        balance={Number(14589).toLocaleString()}
-        cup={true}
-        border={true}
-      />
-      <div className="border border-gray-500 p-1 rounded-lg w-full h-14 mt-5 grid grid-cols-3 gap-1">
-        <div className="border border-gray-500 rounded-lg flex justify-center items-center text-white bg-black/50">
-          Special
-        </div>
-        <div className="border border-gray-500 rounded-lg flex justify-center items-center text-white bg-black/50">Special</div>
-        <div className="border border-gray-500 rounded-lg flex justify-center items-center text-white bg-black/50">Special</div>
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Balance
+          // balance = {tasks.balance} ///get from database
+            balance={Number(14589).toLocaleString()}
+            cup={true}
+            border={true}
+          />
+          <div className="border border-gray-500 p-1 rounded-lg w-full h-14 mt-5 grid grid-cols-3 gap-1">
+            <Tab
+              className={special && "!bg-[#ef49c6cc]/60"}
+              onClick={() => handleActiveTab("special")}
+              title={"Special"}
+            />
+            <Tab
+              className={league && "!bg-[#ef49c6cc]/60"}
+              onClick={() => handleActiveTab("leagues")}
+              title={"Leagues"}
+              notComplete={true}
+            />
+            <Tab
+              className={refTasks && "!bg-[#ef49c6cc]/60"}
+              onClick={() => handleActiveTab("ref_tasks")}
+              title={"Ref Tasks"}
+            />
+          </div>
+          <div className="container--task">
+            {special && <Special specials = {tasks.specials} />}
+
+            {league && <Leagues />}
+
+            {refTasks && <RefTasks />}
+          </div>
+        </>
+      )}
     </RootLayout>
   );
 };

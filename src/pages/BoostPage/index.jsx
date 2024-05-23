@@ -1,5 +1,8 @@
 import bgImg from "../../assets/bg_images/bg-6.png";
 import Balance from "../../components/Balance";
+import Boosters from "../../components/Boosters/Boosters";
+import DailyBooster from "../../components/DailyBooster";
+import { FlameIcon, FlashIcon } from "../../components/Icons";
 import RootLayout from "../../components/Layout";
 
 const BoostPage = () => {
@@ -15,6 +18,16 @@ const BoostPage = () => {
         border={true}
         description={"Your Share balance"}
       />
+      <div className="flex flex-col gap-2">
+        <p className="text-2xl text-white mt-4 mb-2 font-bold">
+          Your Daily boosters :
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          <DailyBooster icon={<FlameIcon size={28} color={"yellow"} />} name={'Taping Guru'} remain_num={1} />
+          <DailyBooster icon={<FlashIcon size={28} color={"yellow"} />} name={'Full Tank'} remain_num={3} />
+        </div>
+      </div>
+      <Boosters />
     </RootLayout>
   );
 };

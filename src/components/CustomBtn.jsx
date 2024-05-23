@@ -7,7 +7,10 @@ const CustomBtn = ({ title, onClick, className, disabled }) => {
       onClick={onClick}
       disabled={disabled}
       className={clsx(
-        "text-white text-xs rounded-lg shadow-lg py-1.5 px-4",
+        "text-xs rounded-lg shadow-lg py-1.5 px-4",
+        disabled
+          ? "bg-slate-900 text-slate-700"
+          : "bg-gradient-to-b from-violet-600 via-violet-800 to-violet-950 text-white",
         className
       )}
     >
