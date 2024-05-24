@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   
-  console.log("userqq", tele);
+  console.log("userqq", tele.initData);
 
   return (
     <div className="app">
