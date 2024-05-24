@@ -19,7 +19,7 @@ const TelegramProvider = ({ children }) => {
       );
       setTeleAccountInfo(userInfo);
     }
-    console.log('errttt', JSON.parse(teleAccountInfo));
+    console.log('errttt', JSON.parse(teleAccountInfo.user).id);
   }, []);
 
   return (
