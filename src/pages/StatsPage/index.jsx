@@ -4,18 +4,15 @@ import Balance from "../../components/Balance";
 import RootLayout from "../../components/Layout";
 import Stats from "../../components/Stat/Stats";
 import { useTelegram } from "../../hooks/useTelegram";
-import { useAuth } from "../../hooks/useAuth";
 
 const StatsPage = () => {
   const [loading, setLoading] = useState(false);
-  const user = useAuth();
-  console.log(user);
 
   /**in real decomment these */
-  // const telegram = useTelegram();
+  const telegram = useTelegram();
   // useEffect(() => {
-  //   const telegramInfo = JSON.parse(telegram.user);
-  //   const userId = telegramInfo.id
+  //   // const telegramInfo = JSON.parse(telegram.user);
+  //   // const userId = telegramInfo.id
   // }, [telegram]);
 
   // const userId = 15465654;

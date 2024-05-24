@@ -20,7 +20,12 @@ const TelegramProvider = ({ children }) => {
       setTeleAccountInfo(userInfo);
     }
   }, []);
-  
+
+  useEffect(() => {
+    const userId = JSON.parse(teleAccountInfo.user).id;
+    console.log('userrrr',userId);
+  },[teleAccountInfo])
+
   return (
     <TelegramContext.Provider value={teleAccountInfo}>
       {children}
