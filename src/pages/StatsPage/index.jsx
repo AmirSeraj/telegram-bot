@@ -11,8 +11,8 @@ const StatsPage = () => {
   useEffect(() => {
     const userId = telegram.userId
     const username = telegram.username;
-    console.log("eee", userId);
-    console.log("id", username);
+    console.log("eeed", userId);
+    console.log("idf", username);
   }, [telegram]);
 
   return (
