@@ -10,7 +10,7 @@ const StatsPage = () => {
   const userId = telegram.user.id;
   console.log("user_id", userId);
   console.log("telegram", telegram);
-  console.log("parased_id", JSON.stringify(telegram));
+  console.log("parased_id", JSON.parse(JSON.stringify(telegram)));
   return (
     <RootLayout
       bg_img={bgImg}
