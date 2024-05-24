@@ -9,9 +9,11 @@ const StatsPage = () => {
   const telegram = useTelegram();
 
   useEffect(() => {
-    const userId = telegram.user?.id;
-    console.log('eee',userId);
-  },[telegram])
+    const userId = JSON.parse(telegram.user);
+    const Id = JSON.parse(telegram.user).id;
+    console.log("eee", userId);
+    console.log("id", Id);
+  }, [telegram]);
 
   return (
     <RootLayout
