@@ -5,7 +5,6 @@ const TelegramContext = createContext({});
 const TelegramProvider = ({ children }) => {
   const [teleAccountInfo, setTeleAccountInfo] = useState(null);
 
-
   useEffect(() => {
     const tele = window.Telegram.WebApp;
     if (tele) {
@@ -19,8 +18,13 @@ const TelegramProvider = ({ children }) => {
       );
       setTeleAccountInfo(userInfo);
     }
-    console.log('errttt', JSON.parse(teleAccountInfo.user).id);
   }, []);
+
+  useEffect(() => {
+    if (teleAccountInfo) {
+      console.log("errttt", JSON.parse(teleAccountInfo.user).id);
+    }
+  }, [teleAccountInfo]);
 
   return (
     <TelegramContext.Provider value={teleAccountInfo}>
