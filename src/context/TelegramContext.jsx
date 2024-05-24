@@ -55,7 +55,7 @@ const TelegramProvider = ({ children }) => {
       const response = await fetch(
         process.env.REACT_APP_URL + "api/auth/login-register/" + userId,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
