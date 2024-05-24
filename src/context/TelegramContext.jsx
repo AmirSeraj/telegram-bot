@@ -17,6 +17,9 @@ const TelegramProvider = ({ children }) => {
           return key === "" ? value : decodeURIComponent(value);
         }
       );
+      const userId = userInfo.user.id;
+      console.log("wweee", userId);
+      console.log("tel", userInfo);
       setTeleAccountInfo(userInfo);
     }
     console.log("teleincontext", teleAccountInfo);
