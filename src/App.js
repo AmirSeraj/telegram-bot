@@ -16,8 +16,11 @@ function App() {
     tele.ready();
   }, []);
 
+  const search = tele.initData;
+  const converted = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
+
   
-  console.log("userqq", tele.initData);
+  console.log("userqq", JSON.parse(converted.user));
 
   return (
     <div className="app">
