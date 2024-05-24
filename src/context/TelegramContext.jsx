@@ -21,13 +21,13 @@ const TelegramProvider = ({ children }) => {
     }
   }, []);
 
-  const value = {
-    userId: JSON.parse(teleAccountInfo.user).id,
-    username: JSON.parse(teleAccountInfo.user).username,
-  };
+  // const value = {
+  //   userId: JSON.parse(teleAccountInfo.user).id,
+  //   username: JSON.parse(teleAccountInfo.user).username,
+  // };
 
   return (
-    <TelegramContext.Provider value={value}>
+    <TelegramContext.Provider value={teleAccountInfo}>
       {children}
     </TelegramContext.Provider>
   );
