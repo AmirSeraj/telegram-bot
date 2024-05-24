@@ -1,20 +1,51 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import bgImg from "../../assets/bg_images/bg-1.png";
 import Balance from "../../components/Balance";
 import RootLayout from "../../components/Layout";
 import Stats from "../../components/Stat/Stats";
 import { useTelegram } from "../../hooks/useTelegram";
+import { useAuth } from "../../hooks/useAuth";
 
 const StatsPage = () => {
-  const telegram = useTelegram();
+  const [loading, setLoading] = useState(false);
+  const user = useAuth();
+  console.log(user);
 
-  useEffect(() => {
-    const telegramInfo = JSON.parse(telegram.user);
-    const userId = telegramInfo.id;
-    const username = telegramInfo.username;
-    console.log("ee", userId);
-    console.log("idd", username);
-  }, [telegram]);
+  /**in real decomment these */
+  // const telegram = useTelegram();
+  // useEffect(() => {
+  //   const telegramInfo = JSON.parse(telegram.user);
+  //   const userId = telegramInfo.id
+  // }, [telegram]);
+
+  // const userId = 15465654;
+
+  // const getTasks_Specials = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch("fetch_get_all_tasks_specials", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-type": "application/json",
+  //         Accept: "application/json",
+  //       },
+  //     });
+  //     const tasks = await response.json();
+  //     setTasks(tasks);
+  //     setLoading(false);
+  //     return tasks;
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log("error2", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setSpecial(true);
+  //   getTasks_Specials();
+  // }, []);
+
+  // useEffect(() => {}, []);
 
   return (
     <RootLayout
