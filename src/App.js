@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import clsx from "clsx";
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 // import FooterContainer from "./components/Footer/FooterContainer";
 // import { BackGroundColor } from "./config/colors";
@@ -9,15 +8,20 @@ import TapPage from "./pages/TapPage";
 import BoostPage from "./pages/BoostPage";
 import StatsPage from "./pages/StatsPage";
 
-const tele = window.Telegram.WebApp;
-
 function App() {
+  const tele = window.Telegram.WebApp;
+  // const tele = Telegram.WebApp.initData
+
   useEffect(() => {
     tele.ready();
   }, []);
-  // BackGroundColor
+
+  
+  console.log("userqq", tele);
+
   return (
     <div className="app">
+      {/* userdata:{user} */}
       <Routes>
         <Route path="/ref" exact element={<RefPage />} />
         <Route path="/task" exact element={<TaskPage />} />
