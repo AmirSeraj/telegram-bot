@@ -22,8 +22,8 @@ const TelegramProvider = ({ children }) => {
   }, []);
 
   const value = {
-    userId: teleAccountInfo?.user.id,
-    username: teleAccountInfo?.user.username,
+    userId: JSON.parse(teleAccountInfo.user).id,
+    username: JSON.parse(teleAccountInfo.user).username,
   };
 
   return (
