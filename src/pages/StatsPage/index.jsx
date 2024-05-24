@@ -7,8 +7,8 @@ import { useTelegram } from "../../hooks/useTelegram";
 
 const StatsPage = () => {
   const telegram = useTelegram();
-  
-  console.log('teleee',telegram);
+  const userId = telegram.user.id;
+  console.log("teleee", userId);
   return (
     <RootLayout
       bg_img={bgImg}
