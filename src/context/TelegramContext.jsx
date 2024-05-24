@@ -3,8 +3,8 @@ import { createContext, useEffect, useState } from "react";
 const TelegramContext = createContext({});
 
 const TelegramProvider = ({ children }) => {
-  const [TeleAccountInfo, setTeleAccountInfo] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [teleAccountInfo, setTeleAccountInfo] = useState(null);
+  // const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const tele = window.Telegram.WebApp;
@@ -19,12 +19,13 @@ const TelegramProvider = ({ children }) => {
       );
       setTeleAccountInfo(userInfo);
     }
-    const userId = TeleAccountInfo.user.id;
-    setUserId(userId);
+    console.log("teleincontext", teleAccountInfo);
+    // const userId = TeleAccountInfo.user.id;
+    // setUserId(userId);
   }, []);
 
   return (
-    <TelegramContext.Provider value={userId}>
+    <TelegramContext.Provider value={teleAccountInfo}>
       {children}
     </TelegramContext.Provider>
   );
