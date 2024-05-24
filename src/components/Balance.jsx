@@ -19,7 +19,13 @@ const Balance = ({ balance, border, cup, description, referral, referral_score, 
           {description && <p className="pb-0 text-sm">{description}</p>}
           <div className="flex gap-2 items-center w-full justify-center">
             <img src="./images/coin-icon.png" alt="coin" />
-            <span className="text-3xl text-white font-bold">{balance}</span>
+            {
+              balance ? (
+                <span className="text-3xl text-white font-bold">{balance}</span>
+              ) : (
+                <span className="text-3xl text-white font-bold">-</span>
+              ) 
+            }
           </div>
           {cup && <div>Silver</div>}
         </>

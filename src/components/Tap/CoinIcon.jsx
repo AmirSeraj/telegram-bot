@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const CoinIcon = ({ balanceRef, increment, onCoinClick, currentSpark }) => {
+const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
   const [texts, setTexts] = useState([]);
 
   const fadeOutText = (index) => {
@@ -27,8 +27,7 @@ const CoinIcon = ({ balanceRef, increment, onCoinClick, currentSpark }) => {
     if (currentSpark === 0) {
       return;
     }
-    balanceRef.current.value =
-      Math.round((balanceRef.current.value + increment) * 100) / 100;
+    balance = Math.round((balance + increment) * 100) / 100;
     onCoinClick();
   }
 
