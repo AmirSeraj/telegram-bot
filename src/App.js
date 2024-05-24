@@ -20,7 +20,7 @@ function App() {
   const converted = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
 
   
-  console.log("userqq", JSON.parse(converted.user));
+  console.log("use", JSON.parse(converted.user));
 
   return (
     <div className="app">
