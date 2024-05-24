@@ -22,7 +22,8 @@ const TelegramProvider = ({ children }) => {
 
   useEffect(() => {
     if (teleAccountInfo) {
-      console.log("errttt", JSON.parse(teleAccountInfo.user).id);
+      const userId = JSON.parse(teleAccountInfo.user).id;
+      console.log("userIdddd", userId);
     }
   }, [teleAccountInfo]);
 
