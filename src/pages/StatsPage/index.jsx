@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import bgImg from "../../assets/bg_images/bg-1.png";
 import Balance from "../../components/Balance";
 import RootLayout from "../../components/Layout";
 import Stats from "../../components/Stat/Stats";
+import { useTelegram } from "../../hooks/useTelegram";
 
 const StatsPage = () => {
+  const telegram = useTelegram();
+  console.log('teleee',telegram);
+  useEffect({
+
+  },[])
   return (
     <RootLayout
       bg_img={bgImg}
