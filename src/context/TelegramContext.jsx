@@ -17,18 +17,17 @@ const TelegramProvider = ({ children }) => {
           return key === "" ? value : decodeURIComponent(value);
         }
       );
-      const userId = userInfo.user.id;
-      console.log("wweee", userId);
-      console.log("tel", userInfo);
       setTeleAccountInfo(userInfo);
     }
-    console.log("teleincontext", teleAccountInfo);
-    // const userId = TeleAccountInfo.user.id;
-    // setUserId(userId);
   }, []);
 
+  const value = {
+    userId: JSON.parse(teleAccountInfo.user).id,
+    username: JSON.parse(teleAccountInfo.user).username,
+  };
+
   return (
-    <TelegramContext.Provider value={teleAccountInfo}>
+    <TelegramContext.Provider value={value}>
       {children}
     </TelegramContext.Provider>
   );

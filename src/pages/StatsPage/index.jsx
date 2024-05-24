@@ -9,10 +9,10 @@ const StatsPage = () => {
   const telegram = useTelegram();
 
   useEffect(() => {
-    const userId = JSON.parse(telegram.user);
-    const Id = JSON.parse(telegram.user).id;
+    const userId = telegram.userId
+    const username = telegram.username;
     console.log("eee", userId);
-    console.log("id", Id);
+    console.log("id", username);
   }, [telegram]);
 
   return (
