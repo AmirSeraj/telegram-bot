@@ -3,13 +3,21 @@ import { Close } from "./Icons";
 import clsx from "clsx";
 import Loading from "./LoadingComponent/Loading";
 
-const Modal = ({ setOpenModal, openModal, loading, task, taskInfo, children }) => {
-  taskInfo = {
-    title: "Connect Solana wallet",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque.",
-    number: 200000,  
-  };
+const Modal = ({
+  setOpenModal,
+  openModal,
+  loading,
+  task,
+  taskInfo,
+  children,
+  icon,
+  boostTitle,
+  boostDescription,
+  boostTapInfo,
+  boostTokenRequired,
+  boostlevel,
+  balance,
+}) => {
   return (
     <div
       className={`${
@@ -36,17 +44,26 @@ const Modal = ({ setOpenModal, openModal, loading, task, taskInfo, children }) =
               <h1 className="capitalize text-2xl">{taskInfo.title}</h1>
               <p className="text-slate-400">{taskInfo.description}</p>
               <div className="my-2 bg-slate-900 py-2 px-3 rounded-md flex gap-3 items-center">
-                <img className="w-[40px] h-[40px]" src="/images/coin-icon.png" alt="coin" />
+                <img
+                  className="w-[40px] h-[40px]"
+                  src="/images/coin-icon.png"
+                  alt="coin"
+                />
                 <div className="flex flex-col gap-1 items-center">
-                    <span className="text-white">Reward</span>
-                    <span>{Number(taskInfo.number).toLocaleString()}</span>
+                  <span className="text-white">Reward</span>
+                  <span>{Number(taskInfo.number).toLocaleString()}</span>
                 </div>
               </div>
               <h1 className="text-xl text-white">Your Tasks</h1>
               {children}
             </div>
           ) : (
-            <div>boost info</div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-[120px] h-[120px] flex justify-center items-center bg-slate-700 rounded-3xl">
+                {icon}
+              </div>
+              <h1 className="text-center text-2xl text-white"></h1>
+            </div>
           )}
         </>
       )}

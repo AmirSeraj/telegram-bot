@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bgImg from "../../assets/bg_images/bg-6.png";
 import Balance from "../../components/Balance";
 import Boosters from "../../components/Boosters/Boosters";
@@ -8,22 +8,37 @@ import RootLayout from "../../components/Layout";
 import { useTelegram } from "../../hooks/useTelegram";
 
 /**PATH */
-const path = process.env.REACT_APP_URL + "api/landing/info-stats";
+const path_token = process.env.REACT_APP_URL + "api/landing/info-t_balance";
 /**PATH */
 
 const BoostPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [boost, setBoost] = useState([]);
-
-  /**in real decomment these */
+  const [token, setToken] = useState(0);
   const user = useTelegram();
-  // useEffect(() => {
-  //   const telegramInfo = JSON.parse(telegram.user);
-  //   const userId = telegramInfo.id;
-  //   console.log("ueee", userId);
-  // }, [telegram]);
 
-  
+  /**1.get token */
+  const getToken = async () => {
+    if (user?.uuid_name) {
+      try {
+        const response = await fetch(path_token, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            "info-user": user.uuid_name,
+          },
+        });
+        const result = await response.json();
+        console.log("token", result);
+        setToken(result); ////balance
+      } catch (error) {
+        console.log("error2", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   return (
     <RootLayout
@@ -33,7 +48,7 @@ const BoostPage = () => {
       // }
     >
       <Balance
-        balance={Number(14589).toLocaleString()}
+        balance={Number(token?.amount).toLocaleString()}
         border={true}
         description={"Your Share balance"}
       />
@@ -54,7 +69,7 @@ const BoostPage = () => {
           />
         </div>
       </div>
-      <Boosters />
+      <Boosters tokenBalance={Number(token?.amount)} />
     </RootLayout>
   );
 };

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-const Balance = ({ balance, border, cup, description, referral, referral_score, referral_status=false }) => {
+const Balance = ({ balance, border, cup, description, referral, referral_score, referral_status=false}) => {
   return (
     <div
       className={clsx(
@@ -20,10 +20,11 @@ const Balance = ({ balance, border, cup, description, referral, referral_score, 
           <div className="flex gap-2 items-center w-full justify-center">
             <img src="./images/coin-icon.png" alt="coin" />
             {
+              // <span className="text-3xl text-white font-bold">{balance}</span>
               balance ? (
                 <span className="text-3xl text-white font-bold">{balance}</span>
               ) : (
-                <span className="text-3xl text-white font-bold">-</span>
+                <span className="text-3xl text-white font-bold">----</span>
               ) 
             }
           </div>

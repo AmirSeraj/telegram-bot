@@ -5,6 +5,8 @@ import bgImg from "../../assets/bg_images/bg-2.png";
 import RootLayout from "../../components/Layout";
 import Balance from "../../components/Balance";
 import { useTelegram } from "../../hooks/useTelegram";
+import io from "socket.io-client";
+import ProgressBarLoading from "../../components/TapLoading/ProgressBarLoading";
 
 /**PATH */
 const user_balance_path =
@@ -17,14 +19,21 @@ const coin_fill_speed_path =
 
 const Home = () => {
   const user = useTelegram();
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState(0);
   const [trophy, setTrophy] = useState(null);
   const [energyUnit, setEnergyUnit] = useState(null);
   const [increaseSpeed, setIncreaseSpeed] = useState(null);
+  const [loading_one, setLoading_one] = useState(false);
+  const [loading_two, setLoading_two] = useState(false);
+  const [loading_three, setLoading_three] = useState(false);
+  const [loading_four, setLoading_four] = useState(false);
+  /**socket */
+  const socket_send = useRef(null);
+  const [socketChange, setSocketChange] = useState(0);
 
   /**1.balance or coin number */
   const getBalance = async () => {
-    // setLoading(true);
+    setLoading_one(true);
     if (user?.uuid_name) {
       try {
         const response = await fetch(user_balance_path, {
@@ -37,10 +46,10 @@ const Home = () => {
         });
         const result = await response.json();
         console.log("statssss", result);
-        setBalance(result);
-        // setLoading(false);
+        setBalance(Number(result?.amount));
+        setLoading_one(false);
       } catch (error) {
-        // setLoading(false);
+        setLoading_one(false);
         console.log("error2", error);
       }
     }
@@ -48,7 +57,7 @@ const Home = () => {
 
   /**2.trophy or league type */
   const getTrophy = async () => {
-    // setLoading(true);
+    setLoading_two(true);
     if (user?.uuid_name) {
       try {
         const response = await fetch(user_trophy_path, {
@@ -62,9 +71,9 @@ const Home = () => {
         const result = await response.json();
         console.log("trophy", result);
         setTrophy(result); ////balanceRef
-        // setLoading(false);
+        setLoading_two(false);
       } catch (error) {
-        // setLoading(false);
+        setLoading_two(false);
         console.log("error2", error);
       }
     }
@@ -77,7 +86,7 @@ const Home = () => {
    * unit : 4 =====> amount of increase per tab
    */
   const getEnergyUnit = async () => {
-    // setLoading(true);
+    setLoading_three(true);
     if (user?.uuid_name) {
       try {
         const response = await fetch(energy_unit_path, {
@@ -91,9 +100,9 @@ const Home = () => {
         const result = await response.json();
         console.log("energy_unit", result);
         setEnergyUnit(result); ////balanceRef
-        // setLoading(false);
+        setLoading_three(false);
       } catch (error) {
-        // setLoading(false);
+        setLoading_three(false);
         console.log("error2", error);
       }
     }
@@ -101,7 +110,7 @@ const Home = () => {
 
   /**4.speed of increase or recharging speed */
   const getRechargingSpeed = async () => {
-    // setLoading(true);
+    setLoading_four(true);
     if (user?.uuid_name) {
       try {
         const response = await fetch(coin_fill_speed_path, {
@@ -115,9 +124,9 @@ const Home = () => {
         const result = await response.json();
         console.log("increase_speed", result);
         setIncreaseSpeed(result); ////balanceRef
-        // setLoading(false);
+        setLoading_four(false);
       } catch (error) {
-        // setLoading(false);
+        setLoading_four(false);
         console.log("error2", error);
       }
     }
@@ -128,7 +137,53 @@ const Home = () => {
     getTrophy();
     getEnergyUnit();
     getRechargingSpeed();
+
+    /**socket settings */
+    socket_send.current = io.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
+    // socket_send.on("top", function (data) {
+    //   setSocketChange((prevData) => prevData + 1);
+    // });
+    return () => {
+      if (!socket_send.current) {
+        // if there is no socket;
+        return;
+      }
+    };
   }, []);
+
+  /**when click on coin */
+  const handleCoinClick = () => {
+    // setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+    // setCurrentSpark((prevSpark) => Math.max(prevSpark - energyUnit?.unit, 0));
+    // console.log("balance", balance);
+    // const new_balance = balance + Number(energyUnit?.unit);
+
+    // console.log(user?.uuid_name);
+    /**socket settings */
+    if (socket_send.current) {
+      socket_send.current.emit("tap", "level", (data) => {
+        setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+        setCurrentSpark((prevSpark) =>
+          Math.max(prevSpark - energyUnit?.unit, 0)
+        );
+      });
+    }
+  };
+
+  // useEffect(() => {
+  //   setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+  //   setCurrentSpark((prevSpark) => Math.max(prevSpark - energyUnit?.unit, 0));
+  // }, [socket_send.current]);
+
+  // useEffect(() => {
+  //   socket_receive.current = io.connect(
+  //     process.env.REACT_APP_URL_SOCKET + "laravel." + user?.uuid_name
+  //   );
+  //   socket_receive_token.current.on("receive_message", (data) => {
+  //     console.log("data", data);
+  //     setBalance(data);
+  //   });
+  // }, [user?.uuid_name]);
 
   const balanceRef = useRef({ value: 0 });
   const initialSparkRef = useRef({ value: 100 });
@@ -153,12 +208,6 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCoinClick = () => {
-    setCurrentSpark((prevSpark) =>
-      Math.max(prevSpark - energyUnit?.size, 0)
-    );
-  };
-
   return (
     <RootLayout
       bg_img={bgImg}
@@ -167,19 +216,25 @@ const Home = () => {
       // }
     >
       <div className="flex flex-col items-center justify-around w-full h-full">
-        <Balance balance={balance?.amount} cup={true} />
+        <Balance balance={balance} cup={true} loading={loading_one} />
+
         <CoinIcon
-          balance={balance?.amount}
+          balance={balance}
           increment={energyUnit?.unit}
           onCoinClick={handleCoinClick}
           currentSpark={currentSpark}
         />
-        <ScoreBar
-          maxLimitSpark={energyUnit?.size}
-          incrementSparkNumber={incrementSparkNumber}
-          currentSpark={currentSpark}
-          setCurrentSpark={setCurrentSpark}
-        />
+
+        {loading_three && loading_four ? (
+          <ProgressBarLoading />
+        ) : (
+          <ScoreBar
+            maxLimitSpark={energyUnit?.size}
+            incrementSparkNumber={incrementSparkNumber}
+            currentSpark={currentSpark}
+            setCurrentSpark={setCurrentSpark}
+          />
+        )}
       </div>
     </RootLayout>
   );

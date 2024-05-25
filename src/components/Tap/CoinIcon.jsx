@@ -27,7 +27,7 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
     if (currentSpark === 0) {
       return;
     }
-    balance = Math.round((balance + increment) * 100) / 100;
+    // balance = Math.round((balance + increment) * 100) / 100;
     onCoinClick();
   }
 
