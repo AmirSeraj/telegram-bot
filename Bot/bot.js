@@ -1,17 +1,45 @@
-const { Telegraf } = require("telegraf");
-const TELEGRAM_BOT_TOKEN = "7181085962:AAFwtwS7S6BrmgWV3AICpgObAB5iGgPyUfA";
-const bot = new Telegraf(TELEGRAM_BOT_TOKEN);
-
-const web_link = "https://lovely-dango-aa3e18.netlify.app/";
-
-bot.start((ctx) => {
-  const id = ctx.msg.from.id;
-  console.log('id',id);
-  ctx.reply("Welcome:)))", {
-    reply_markup: {
-      keyboard: [[{ text: "web app", web_app: { url: web_link } }]],
-    },
-  });
+const express = require("express")
+const app = express()
+const cors = require("cors");
+const { Console } = require("console");
+const http = require('http').Server(app);
+const PORT = 8000
+const socketIO = require('socket.io')(http, {
+    cors: {
+        origin: "http://localhost:3000"
+    }
 });
 
-bot.launch();
+app.use(cors())
+let users = []
+
+socketIO.on('connection', (socket) => {
+    console.log(`⚡: ${socket.id} user just connected!`)  
+    socket.on("id", data => {
+      socketIO.emit("idResponse", data)
+      console.log("userId:", data)
+    })
+
+    socket.on("tap", data => {
+      socketIO.emit("tap", data.level);
+      console.log(data)
+    }
+    )
+
+    socket.on("submit", data => {
+      socketIO.emit("submitted");
+      console.log(data)
+    }
+    )
+
+    socket.on('disconnect', () => {
+      console.log('🔥: A user disconnected');
+      users = users.filter(user => user.socketID !== socket.id)
+      socketIO.emit("newUserResponse", users)
+      socket.disconnect()
+    });
+});
+
+http.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+});
