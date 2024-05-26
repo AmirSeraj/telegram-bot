@@ -25,18 +25,17 @@ const StatsPage = () => {
   useEffect(() => {
     const getStats = async () => {
       setLoading(true);
-      if (user?.uuid_name) {
+      if (user?.user?.uuid_name) {
         try {
           const response = await fetch(path, {
             method: "GET",
             headers: {
               "Content-type": "application/json",
               Accept: "application/json",
-              "info-user": user.uuid_name,
+              "info-user": user?.user?.uuid_name,
             },
           });
           const result = await response.json();
-          console.log("statssss", result);
           setStats(result);
           setLoading(false);
         } catch (error) {
@@ -46,7 +45,7 @@ const StatsPage = () => {
       }
     };
     getStats();
-  }, [user?.uuid_name]);
+  }, [user?.user?.uuid_name]);
 
   return (
     <RootLayout
@@ -61,7 +60,7 @@ const StatsPage = () => {
         <>
           <Balance
             description={"Total Share Balance :"}
-            balance={Number(stats.totalShareBalance).toLocaleString() + " T"}
+            balance={Number(stats.totalShareBalance) + " T"}
             border={true}
           />
           <div className="mt-16 flex flex-col gap-2">

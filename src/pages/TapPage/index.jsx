@@ -28,20 +28,18 @@ const Home = () => {
   const [loading_three, setLoading_three] = useState(false);
   const [loading_four, setLoading_four] = useState(false);
   /**socket */
-  const socket_send = useRef(null);
-  const [socketChange, setSocketChange] = useState(0);
 
   /**1.balance or coin number */
   const getBalance = async () => {
     setLoading_one(true);
-    if (user?.uuid_name) {
+    if (user?.user?.uuid_name) {
       try {
         const response = await fetch(user_balance_path, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user.uuid_name,
+            "info-user": user?.user?.uuid_name,
           },
         });
         const result = await response.json();
@@ -58,14 +56,14 @@ const Home = () => {
   /**2.trophy or league type */
   const getTrophy = async () => {
     setLoading_two(true);
-    if (user?.uuid_name) {
+    if (user?.user?.uuid_name) {
       try {
         const response = await fetch(user_trophy_path, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user.uuid_name,
+            "info-user": user?.user?.uuid_name,
           },
         });
         const result = await response.json();
@@ -87,14 +85,14 @@ const Home = () => {
    */
   const getEnergyUnit = async () => {
     setLoading_three(true);
-    if (user?.uuid_name) {
+    if (user?.user?.uuid_name) {
       try {
         const response = await fetch(energy_unit_path, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user.uuid_name,
+            "info-user": user?.user?.uuid_name,
           },
         });
         const result = await response.json();
@@ -111,14 +109,14 @@ const Home = () => {
   /**4.speed of increase or recharging speed */
   const getRechargingSpeed = async () => {
     setLoading_four(true);
-    if (user?.uuid_name) {
+    if (user?.user?.uuid_name) {
       try {
         const response = await fetch(coin_fill_speed_path, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user.uuid_name,
+            "info-user": user?.user?.uuid_name,
           },
         });
         const result = await response.json();
@@ -137,19 +135,26 @@ const Home = () => {
     getTrophy();
     getEnergyUnit();
     getRechargingSpeed();
-
-    /**socket settings */
-    socket_send.current = io.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
     // socket_send.on("top", function (data) {
     //   setSocketChange((prevData) => prevData + 1);
     // });
-    return () => {
-      if (!socket_send.current) {
-        // if there is no socket;
-        return;
-      }
-    };
+    // return () => {
+    //   if (!socket_app.current) {
+    //     // if there is no socket;
+    //     return;
+    //   }
+    // };
   }, []);
+
+  // const socket_app = useRef(null)
+  // useEffect(() => {
+
+    // socket_app.current = io(process.env.REACT_APP_URL_SOCKET_GO + "/")
+    // socket_app.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
+    /**socket settings */
+    // var socket_app = io.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
+    // socket_app.current.emit("id", user?.user?.uuid_name);
+  // }, []);
 
   /**when click on coin */
   const handleCoinClick = () => {
@@ -160,14 +165,22 @@ const Home = () => {
 
     // console.log(user?.uuid_name);
     /**socket settings */
-    if (socket_send.current) {
-      socket_send.current.emit("tap", "level", (data) => {
-        setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
-        setCurrentSpark((prevSpark) =>
-          Math.max(prevSpark - energyUnit?.unit, 0)
-        );
-      });
-    }
+    // if (socket_app.current) {
+    //   socket_app.current.emit("tap", `${user?.level?.title}`, function (data) {
+    //     console.log(
+    //       "socket emitted and click on coin, user level:",
+    //       user?.level?.title,
+    //       "data:",
+    //       data
+    //     );
+    //     if (data) {
+    //       setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+    //       setCurrentSpark((prevSpark) =>
+    //         Math.max(prevSpark - energyUnit?.unit, 0)
+    //       );
+    //     }
+    //   });
+    // }
   };
 
   // useEffect(() => {

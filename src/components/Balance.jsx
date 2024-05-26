@@ -1,7 +1,16 @@
 import clsx from "clsx";
 import React from "react";
 
-const Balance = ({ balance, border, cup, description, referral, referral_score, referral_status=false}) => {
+const Balance = ({
+  balance,
+  border,
+  cup,
+  description,
+  referral,
+  referral_score,
+  referral_status = false,
+  loading,
+}) => {
   return (
     <div
       className={clsx(
@@ -21,11 +30,13 @@ const Balance = ({ balance, border, cup, description, referral, referral_score, 
             <img src="./images/coin-icon.png" alt="coin" />
             {
               // <span className="text-3xl text-white font-bold">{balance}</span>
-              balance ? (
-                <span className="text-3xl text-white font-bold">{balance}</span>
-              ) : (
+              loading ? (
                 <span className="text-3xl text-white font-bold">----</span>
-              ) 
+              ) : (
+                <span className="text-3xl text-white font-bold">
+                  {balance ? balance : 0}
+                </span>
+              )
             }
           </div>
           {cup && <div>Silver</div>}

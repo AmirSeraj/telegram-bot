@@ -15,9 +15,12 @@ const Modal = ({
   boostDescription,
   boostTapInfo,
   boostTokenRequired,
-  boostlevel,
+  boostLevel,
   balance,
+  onClick
 }) => {
+  console.log('balance:',balance, 'boostTokenRequired', boostTokenRequired);
+  const disabled = Number(balance) < Number(boostTokenRequired);
   return (
     <div
       className={`${
@@ -62,7 +65,20 @@ const Modal = ({
               <div className="w-[120px] h-[120px] flex justify-center items-center bg-slate-700 rounded-3xl">
                 {icon}
               </div>
-              <h1 className="text-center text-2xl text-white"></h1>
+              <h1 className="text-center text-3xl text-white font-bold mt-8 mb-2">{boostTitle}</h1>
+              <p className="my-2">{boostDescription}</p>
+              <p className="text-sm">{boostTapInfo}</p>
+              <div className="flex w-full px-4 mt-8 justify-center gap-6 items-center">
+                <div className="flex gap-1 justify-center items-center">
+                  <img src="/images/coin-icon.png" alt="coin" />
+                  <span className="text-2xl mx-2">{Number(boostTokenRequired).toLocaleString()}</span>
+                </div>
+                <div className="text-2xl">|</div>
+                <div className="text-2xl">+ {boostLevel} level</div>
+              </div>
+              <button onClick={onClick} className={`w-full bg-gradient-to-b from-slate-500 to-slate-700 mt-10 py-5 rounded-md ${disabled && 'text-gray-400'}`} disabled={disabled}>
+                {disabled ? 'Insufficient amount' : 'Upgrade'}
+              </button>
             </div>
           )}
         </>

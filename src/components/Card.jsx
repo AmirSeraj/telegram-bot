@@ -19,7 +19,7 @@ const Card = ({ icon, name, coin_num, level, onClick, arrow = true }) => {
             </div>
             {level && (
               <div className="flex items-center text-sm text-gray-400">
-                | {level ? level : '---'} level
+                | + {level ? level : '---'} level
               </div>
             )}
           </div>
