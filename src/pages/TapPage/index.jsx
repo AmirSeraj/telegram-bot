@@ -5,7 +5,6 @@ import bgImg from "../../assets/bg_images/bg-2.png";
 import RootLayout from "../../components/Layout";
 import Balance from "../../components/Balance";
 import { useTelegram } from "../../hooks/useTelegram";
-import io from "socket.io-client";
 import ProgressBarLoading from "../../components/TapLoading/ProgressBarLoading";
 
 /**PATH */
@@ -17,7 +16,7 @@ const coin_fill_speed_path =
   process.env.REACT_APP_URL + "api/landing/info-recharging";
 /**PATH */
 
-const Home = () => {
+const Home = ({ socket }) => {
   const user = useTelegram();
   const [balance, setBalance] = useState(0);
   const [trophy, setTrophy] = useState(null);
@@ -27,7 +26,15 @@ const Home = () => {
   const [loading_two, setLoading_two] = useState(false);
   const [loading_three, setLoading_three] = useState(false);
   const [loading_four, setLoading_four] = useState(false);
-  /**socket */
+
+  /***socket */
+  // const userId = user?.user?.uuid_name;
+  // useEffect(() => {
+  //   console.log(userId, "dddd");
+  //   if (userId) {
+  //     socket.emit("id", userId);
+  //   }
+  // }, [userId, socket]);
 
   /**1.balance or coin number */
   const getBalance = async () => {
@@ -43,7 +50,7 @@ const Home = () => {
           },
         });
         const result = await response.json();
-        console.log("statssss", result);
+        // console.log("statssss", result);
         setBalance(Number(result?.amount));
         setLoading_one(false);
       } catch (error) {
@@ -67,7 +74,7 @@ const Home = () => {
           },
         });
         const result = await response.json();
-        console.log("trophy", result);
+        // console.log("trophy", result);
         setTrophy(result); ////balanceRef
         setLoading_two(false);
       } catch (error) {
@@ -96,7 +103,7 @@ const Home = () => {
           },
         });
         const result = await response.json();
-        console.log("energy_unit", result);
+        // console.log("energy_unit", result);
         setEnergyUnit(result); ////balanceRef
         setLoading_three(false);
       } catch (error) {
@@ -120,7 +127,7 @@ const Home = () => {
           },
         });
         const result = await response.json();
-        console.log("increase_speed", result);
+        // console.log("increase_speed", result);
         setIncreaseSpeed(result); ////balanceRef
         setLoading_four(false);
       } catch (error) {
@@ -135,53 +142,101 @@ const Home = () => {
     getTrophy();
     getEnergyUnit();
     getRechargingSpeed();
-    // socket_send.on("top", function (data) {
-    //   setSocketChange((prevData) => prevData + 1);
-    // });
-    // return () => {
-    //   if (!socket_app.current) {
-    //     // if there is no socket;
-    //     return;
-    //   }
-    // };
   }, []);
 
-  // const socket_app = useRef(null)
-  // useEffect(() => {
+  useEffect(() => {
+    socket.on("tap", (data) => {
+      console.log("dddfff", data);
+      // setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+      setBalance((prevBalance) => prevBalance + Number(data));
+      setCurrentSpark((prevSpark) => Math.max(prevSpark - data, 0));
+      // setCurrentSpark((prevSpark) => Math.max(prevSpark - energyUnit?.unit, 0));
+    });
+  }, [socket]);
 
-    // socket_app.current = io(process.env.REACT_APP_URL_SOCKET_GO + "/")
-    // socket_app.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
-    /**socket settings */
-    // var socket_app = io.connect(process.env.REACT_APP_URL_SOCKET_GO + "/");
-    // socket_app.current.emit("id", user?.user?.uuid_name);
+  const handleCoinClick = () => {
+    socket.emit(
+      "tap",
+      {
+        id: user?.user?.uuid_name,
+        // level: user?.level?.title,
+        level: 3,
+      },
+      function (data) {
+        console.log("data:", data);
+      }
+    );
+  };
+
+  // useEffect(() => {
+  //   socket.on("tap", (data) => {
+  //     console.log('socket_on:', data);
+  //   });
   // }, []);
 
-  /**when click on coin */
-  const handleCoinClick = () => {
-    // setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
-    // setCurrentSpark((prevSpark) => Math.max(prevSpark - energyUnit?.unit, 0));
-    // console.log("balance", balance);
-    // const new_balance = balance + Number(energyUnit?.unit);
+  // console.log('wwweee',user?.level?.title);
+  // const handleCoinClick = () => {
+  //   socket.emit("tap", `${user?.level?.title}`, function (data) {
+  //     console.log("data:", data);
+  //   });
+  // };
 
-    // console.log(user?.uuid_name);
-    /**socket settings */
-    // if (socket_app.current) {
-    //   socket_app.current.emit("tap", `${user?.level?.title}`, function (data) {
-    //     console.log(
-    //       "socket emitted and click on coin, user level:",
-    //       user?.level?.title,
-    //       "data:",
-    //       data
-    //     );
-    //     if (data) {
-    //       setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
-    //       setCurrentSpark((prevSpark) =>
-    //         Math.max(prevSpark - energyUnit?.unit, 0)
-    //       );
-    //     }
-    //   });
-    // }
-  };
+  // const socketRef = useRef(null);
+
+  // if (!socketRef.current) {
+  //   socketRef.current = io(process.env.REACT_APP_URL_SOCKET_GO);
+  // }
+
+  // useEffect(() => {
+  //   socketRef.current.once("connect", () => console.log("connected")); // only 1 connection established
+  //   return () => {
+  //     socketRef.current.off("disconnect", () => {});
+  //     socketRef.current.disconnect();
+  //   };
+  // }, []);
+
+  // const handleCoinClick = () => {
+  //   if (socketRef.current) {
+  //     socketRef.current.emit("tap", `${user?.level?.title}`, function (data) {
+  //       console.log("emitted");
+  //       // const new_balance = balance + Number(energyUnit?.unit);
+  //       if (data) {
+  //         setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+  //         setCurrentSpark((prevSpark) =>
+  //           Math.max(prevSpark - energyUnit?.unit, 0)
+  //         );
+  //       }
+  //     });
+  //   }
+  // };
+
+  ////////////////******************************** */
+
+  /**when click on coin */
+  // const handleCoinClick = () => {
+  // setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+  // setCurrentSpark((prevSpark) => Math.max(prevSpark - energyUnit?.unit, 0));
+  // console.log("balance", balance);
+  // const new_balance = balance + Number(energyUnit?.unit);
+  // console.log(user?.uuid_name);
+  /**socket settings */
+  // if (socket_app.current) {
+  //   socket_app.current.emit("tap", `${user?.level?.title}`, function (data) {
+  //     console.log(
+  //       "socket emitted and click on coin, user level:",
+  //       user?.level?.title,
+  //       "data:",
+  //       data
+  //     );
+  //     if (data) {
+  //       setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));
+  //       setCurrentSpark((prevSpark) =>
+  //         Math.max(prevSpark - energyUnit?.unit, 0)
+  //       );
+  //     }
+  //   });
+  // }
+  // };
 
   // useEffect(() => {
   //   setBalance((prevBalance) => prevBalance + Number(energyUnit?.unit));

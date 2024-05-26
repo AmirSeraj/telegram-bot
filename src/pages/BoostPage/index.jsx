@@ -66,7 +66,6 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log("token", result);
         setToken(result); ////balance
         setLoading_one(false);
       } catch (error) {
@@ -90,7 +89,6 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log("multitap", result);
         setMultiTap(result); ////balanceRef
         setLoading_two(false);
       } catch (error) {
@@ -114,7 +112,6 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log("energy_limit", result);
         setEnergyLimit(result); ////balanceRef
         setLoading_three(false);
       } catch (error) {
@@ -138,7 +135,6 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log("recharging", result);
         setRecharging(result); ////balanceRef
         setLoading_four(false);
       } catch (error) {
@@ -162,7 +158,6 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log("bot", result);
         setBot(result); ////balanceRef
         setLoading_five(false);
       } catch (error) {
@@ -188,7 +183,6 @@ const BoostPage = () => {
         const result = await response.json();
         await getToken();
         await getMultiTap();
-        console.log("increase_multiwwwwww", result);
         setLoading_one(false);
         setOpenMulti(false);
       } catch (error) {
@@ -213,7 +207,7 @@ const BoostPage = () => {
         const result = await response.json();
         await getToken();
         await getEnergyLimit();
-        console.log("increase_energy", result);
+        // console.log("increase_energy", result);
         setLoading_one(false);
         setOpenEnergy(false);
       } catch (error) {
@@ -238,7 +232,7 @@ const BoostPage = () => {
         const result = await response.json();
         await getToken();
         await getRecharging();
-        console.log("increase_energy", result);
+        // console.log("increase_energy", result);
         setLoading_one(false);
         setOpenRecharging(false);
       } catch (error) {
