@@ -277,34 +277,40 @@ const Home = ({ socket }) => {
   }, []);
 
   return (
-    <RootLayout
-      bg_img={bgImg}
-      // bg_radial={
-      //   "radial-gradient(ellipse at 0% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
-      // }
-    >
-      <div className="flex flex-col items-center justify-around w-full h-full">
-        <Balance balance={balance} cup={true} loading={loading_one} />
+    <>
+      {user?.loading ? (
+        <div>Loading</div>
+      ) : (
+        <RootLayout
+          bg_img={bgImg}
+          // bg_radial={
+          //   "radial-gradient(ellipse at 0% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
+          // }
+        >
+          <div className="flex flex-col items-center justify-around w-full h-full">
+            <Balance balance={balance} cup={true} loading={loading_one} />
 
-        <CoinIcon
-          balance={balance}
-          increment={energyUnit?.unit}
-          onCoinClick={handleCoinClick}
-          currentSpark={currentSpark}
-        />
+            <CoinIcon
+              balance={balance}
+              increment={energyUnit?.unit}
+              onCoinClick={handleCoinClick}
+              currentSpark={currentSpark}
+            />
 
-        {loading_three && loading_four ? (
-          <ProgressBarLoading />
-        ) : (
-          <ScoreBar
-            maxLimitSpark={energyUnit?.size}
-            incrementSparkNumber={incrementSparkNumber}
-            currentSpark={currentSpark}
-            setCurrentSpark={setCurrentSpark}
-          />
-        )}
-      </div>
-    </RootLayout>
+            {loading_three && loading_four ? (
+              <ProgressBarLoading />
+            ) : (
+              <ScoreBar
+                maxLimitSpark={energyUnit?.size}
+                incrementSparkNumber={incrementSparkNumber}
+                currentSpark={currentSpark}
+                setCurrentSpark={setCurrentSpark}
+              />
+            )}
+          </div>
+        </RootLayout>
+      )}
+    </>
   );
 };
 
