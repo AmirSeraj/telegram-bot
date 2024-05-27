@@ -8,7 +8,6 @@ const ScoreBar = ({
   currentSpark,
   // setCurrentSpark,
 }) => {
-  console.log('cuuu',currentSpark);
   // useEffect(() => {
   //   if (currentSpark < maxLimitSpark) {
   //     const interval = setInterval(() => {

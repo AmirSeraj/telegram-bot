@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
+  // console.log('incre',increment);
   const [texts, setTexts] = useState([]);
 
   const fadeOutText = (index) => {
@@ -13,14 +14,15 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
     if (currentSpark === 0) {
       return;
     }
-    const { clientX, clientY } = event;
-    const newText = {
-      value: `+${increment}`,
-      position: { x: clientX, y: clientY },
-      opacity: 1,
-    };
-
-    setTexts((prevTexts) => [...prevTexts, newText]);
+    // if (increment) {
+      const { clientX, clientY } = event;
+      const newText = {
+        value: `+${increment}`,
+        position: { x: clientX, y: clientY },
+        opacity: 1,
+      };
+      setTexts((prevTexts) => [...prevTexts, newText]);
+    // }
   };
 
   function handleClick() {
@@ -82,7 +84,7 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
           style={{
             color: "#c72d70",
             fontSize: "2rem",
-            fontWeight:"bold",
+            fontWeight: "bold",
             position: "absolute",
             top: text.position.y - 30,
             left: text.position.x - 16,

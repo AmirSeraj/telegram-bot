@@ -25,7 +25,7 @@ const TrophyPage = ({ trophy }) => {
         },
       });
       const result = await response.json();
-      console.log('trophies',result);
+      console.log("trophies", result);
       setTrophies(result?.data);
       setLoading(false);
     } catch (error) {
@@ -49,7 +49,7 @@ const TrophyPage = ({ trophy }) => {
           //   "radial-gradient(ellipse at 0% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
           // }
         >
-          <div className="flex flex-col justify-between items-center w-full h-full p-4">
+          <div className="flex flex-col justify-between items-center w-full h-full p-0">
             <div className="flex justify-center items-center flex-col gap-2">
               <h1 className="text-white font-bold text-2xl">
                 {user?.user_trophy}
@@ -58,9 +58,9 @@ const TrophyPage = ({ trophy }) => {
                 Your number of shares determines the league you enter.
               </p>
             </div>
-            <div className="w-full flex justify-center items-center">
+            {/* <div className="flex justify-center items-center w-full"> */}
               <TrophySlider trophies={trophies} loading={loading} />
-            </div>
+            {/* </div>{" "} */}
             <div>cc</div>
           </div>
         </RootLayout>

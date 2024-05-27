@@ -27,6 +27,7 @@ const Home = ({ socket }) => {
   const [currentSpark, setCurrentSpark] = useState(null);
   const [initialSpark, setInitialSpark] = useState(null);
   const [loading, setLoading] = useState(true);
+  const scoreRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -125,11 +126,11 @@ const Home = ({ socket }) => {
     socket.on("top", (data) => {
       console.log("ddddd", data);
       setBalance((prevState) => prevState + Number(data));
+      // scoreRef.current = data;
       // setCurrentSpark((prevSpark) => Math.max(prevSpark - data, 0));
     });
 
     socket.on("energy", (data) => {
-      console.log("numm", data);
       setCurrentSpark(Number(data));
     });
 
@@ -137,12 +138,13 @@ const Home = ({ socket }) => {
       "id",
       {
         id: user?.user?.uuid_name,
-        "limit": Number(energyUnit?.size),
-        "speed": Number(increaseSpeed?.unit),
-        "energy": Number(currentSpark),
+        limit: Number(energyUnit?.size),
+        speed: Number(increaseSpeed?.unit),
+        energy: Number(currentSpark),
       },
       (data) => {}
     );
+
   }, [socket]);
 
   useEffect(() => {
@@ -150,14 +152,18 @@ const Home = ({ socket }) => {
       "id",
       {
         id: user?.user?.uuid_name,
-        "limit": Number(energyUnit?.size),
-        "speed": Number(increaseSpeed?.unit),
-        "energy": Number(initialSpark),
+        limit: Number(energyUnit?.size),
+        speed: Number(increaseSpeed?.unit),
+        energy: Number(initialSpark),
       },
       (data) => {}
     );
-  }, [user?.user?.uuid_name, energyUnit?.size, increaseSpeed?.unit, initialSpark]);
-
+  }, [
+    user?.user?.uuid_name,
+    energyUnit?.size,
+    increaseSpeed?.unit,
+    initialSpark,
+  ]);
 
   const handleCoinClick = () => {
     socket.emit(
@@ -172,25 +178,6 @@ const Home = ({ socket }) => {
     );
     // setBalance((prevBalance) => prevBalance + Number(user?.level?.unit));
   };
-
-  // const balanceRef = useRef({ value: 0 });
-
-  // const forceUpdate = useReducer((x) => x + 1, 0)[1];
-
-  // // assume /**later these two numbers should be read from database */
-  // const maxLimitSpark = 50; /**max limit */
-  // const incrementSparkNumber = 3; /**with what number it should be added, 1, 2, ... */
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     // console.log("Attempting to invoke autoClicker components.");
-  //     balanceRef.current.value =
-  //       Math.round(balanceRef.current.value * 100) / 100;
-  //     forceUpdate();
-  //   }, 100);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   return (
     <>
@@ -209,6 +196,7 @@ const Home = ({ socket }) => {
             <CoinIcon
               balance={balance}
               increment={user?.level?.unit}
+              // increment={scoreRef.current}
               onCoinClick={handleCoinClick}
               currentSpark={currentSpark}
             />
