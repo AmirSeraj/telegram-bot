@@ -6,24 +6,25 @@ const ScoreBar = ({
   incrementSparkNumber,
   maxLimitSpark,
   currentSpark,
-  setCurrentSpark,
+  // setCurrentSpark,
 }) => {
-  useEffect(() => {
-    if (currentSpark < maxLimitSpark) {
-      const interval = setInterval(() => {
-        setCurrentSpark((prevSpark) => {
-          const newSpark = prevSpark + incrementSparkNumber;
-          if (newSpark >= maxLimitSpark) {
-            clearInterval(interval);
-            return maxLimitSpark;
-          }
-          return newSpark;
-        });
-      }, 2000); // Increase every second
+  console.log('cuuu',currentSpark);
+  // useEffect(() => {
+  //   if (currentSpark < maxLimitSpark) {
+  //     const interval = setInterval(() => {
+  //       setCurrentSpark((prevSpark) => {
+  //         const newSpark = prevSpark + incrementSparkNumber;
+  //         if (newSpark >= maxLimitSpark) {
+  //           clearInterval(interval);
+  //           return maxLimitSpark;
+  //         }
+  //         return newSpark;
+  //       });
+  //     }, 2000); // Increase every second
 
-      return () => clearInterval(interval); // Cleanup interval on component unmount
-    }
-  }, [currentSpark, maxLimitSpark, incrementSparkNumber, setCurrentSpark]);
+  //     return () => clearInterval(interval); // Cleanup interval on component unmount
+  //   }
+  // }, [currentSpark, maxLimitSpark, incrementSparkNumber, setCurrentSpark]);
 
   const progressPercentage = (currentSpark / maxLimitSpark) * 100;
 

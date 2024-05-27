@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import bgImg from "../../assets/bg_images/bg-1.png";
-import Balance from "../../components/Balance";
 import RootLayout from "../../components/Layout";
 import Stats from "../../components/Stat/Stats";
 import { useTelegram } from "../../hooks/useTelegram";
-import Loading from "../../components/Loading";
+import Loading from "../../components/LoadingComponent/Loading";
+import Balance from "../../components/Balance/Balance";
+import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
 
 /**PATH */
 const path = process.env.REACT_APP_URL + "api/landing/info-stats";
@@ -48,30 +49,45 @@ const StatsPage = () => {
   }, [user?.user?.uuid_name]);
 
   return (
-    <RootLayout
-      bg_img={bgImg}
-      // bg_radial={
-      //   "radial-gradient(ellipse at 90% 10%, rgb(224, 224, 65) -17%, transparent 50%)"
-      // }
-    >
-      {loading ? (
-        <Loading />
+    <>
+      {user?.rootLoading ? (
+        <LayoutLoading />
       ) : (
-        <>
-          <Balance
-            description={"Total Share Balance :"}
-            balance={Number(stats.totalShareBalance) + " T"}
-            border={true}
-          />
-          <div className="mt-16 flex flex-col gap-2">
-            <Stats description={"Total Touches:"} total={595962583168} />
-            <Stats description={"Total Players:"} total={stats.totalPlayer} />
-            <Stats description={"Daily Users:"} total={stats.dailyDays} />
-            <Stats description={"Online Players:"} total={stats.totalPlayer} />
-          </div>
-        </>
+        <RootLayout
+          bg_img={bgImg}
+          // bg_radial={
+          //   "radial-gradient(ellipse at 90% 10%, rgb(224, 224, 65) -17%, transparent 50%)"
+          // }
+        >
+          <>
+            <Balance
+              description={"Total Share Balance :"}
+              balance={Number(user?.balance)}
+              border={true}
+              loading={user?.loading}
+              stats={true}
+            />
+
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className="mt-16 flex flex-col gap-2">
+                <Stats description={"Total Touches:"} total={595962583168} />
+                <Stats
+                  description={"Total Players:"}
+                  total={stats.totalPlayer}
+                />
+                <Stats description={"Daily Users:"} total={stats.dailyDays} />
+                <Stats
+                  description={"Online Players:"}
+                  total={stats.totalPlayer}
+                />
+              </div>
+            )}
+          </>
+        </RootLayout>
       )}
-    </RootLayout>
+    </>
   );
 };
 

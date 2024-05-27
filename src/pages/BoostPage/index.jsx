@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import bgImg from "../../assets/bg_images/bg-6.png";
-import Balance from "../../components/Balance";
+import Balance from "../../components/Balance/Balance";
 import DailyBooster from "../../components/DailyBooster";
 import {
   BatteryIcon,
@@ -15,9 +15,9 @@ import CardLoading from "../../components/CardLoading";
 import Card from "../../components/Card";
 import Modal from "../../components/Modal";
 import "./Boosters.css";
+import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
 
 /**PATH */
-const path_token = process.env.REACT_APP_URL + "api/landing/info-t_balance";
 const path_multiTap = process.env.REACT_APP_URL + "api/landing/info-multi";
 const path_energy_limit = process.env.REACT_APP_URL + "api/level-up/energy";
 const path_recharging = process.env.REACT_APP_URL + "api/level-up/recharging";
@@ -31,7 +31,6 @@ const path_increase_level_by_recharging =
 /**PATH */
 
 const BoostPage = () => {
-  const [token, setToken] = useState(0);
   const [multiTap, setMultiTap] = useState([]);
   const [energyLimit, setEnergyLimit] = useState([]);
   const [recharging, setRecharging] = useState([]);
@@ -51,29 +50,6 @@ const BoostPage = () => {
 
   /**user */
   const user = useTelegram();
-
-  /**1.get token */
-  const getToken = async () => {
-    setLoading_one(false);
-    if (user?.user?.uuid_name) {
-      try {
-        const response = await fetch(path_token, {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
-          },
-        });
-        const result = await response.json();
-        setToken(result); ////balance
-        setLoading_one(false);
-      } catch (error) {
-        setLoading_one(false);
-        console.log("error2", error);
-      }
-    }
-  };
 
   /**2.get Multi tap */
   const getMultiTap = async () => {
@@ -181,7 +157,8 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        await getToken();
+        console.log('resss',result);
+        await user?.getBalance();
         await getMultiTap();
         setLoading_one(false);
         setOpenMulti(false);
@@ -205,7 +182,7 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        await getToken();
+        await user?.getBalance();
         await getEnergyLimit();
         // console.log("increase_energy", result);
         setLoading_one(false);
@@ -230,7 +207,7 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        await getToken();
+        await user?.getBalance();
         await getRecharging();
         // console.log("increase_energy", result);
         setLoading_one(false);
@@ -243,7 +220,7 @@ const BoostPage = () => {
   };
 
   useEffect(() => {
-    getToken();
+    user?.getBalance();
     getMultiTap();
     getEnergyLimit();
     getRecharging();
@@ -251,135 +228,147 @@ const BoostPage = () => {
   }, []);
 
   return (
-    <RootLayout
-      bg_img={bgImg}
-      // bg_radial={
-      //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -27%, transparent 40%)"
-      // }
-    >
-      <Balance
-        balance={Number(token?.amount)}
-        border={true}
-        description={"Your Share balance"}
-        loading={loading_one}
-      />
-      <div className="flex flex-col gap-2">
-        <p className="text-2xl text-white mt-4 mb-2 font-bold">
-          Your Daily boosters :
-        </p>
-        <div className="grid grid-cols-2 gap-2">
-          <DailyBooster
-            icon={<FlameIcon size={28} color={"yellow"} />}
-            name={"Taping Guru"}
-            remain_num={1}
+    <>
+      {user?.rootLoading ? (
+        <LayoutLoading />
+      ) : (
+        <RootLayout
+          bg_img={bgImg}
+          // bg_radial={
+          //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -27%, transparent 40%)"
+          // }
+        >
+          <Balance
+            border={true}
+            description={"Your Share balance"}
+            loading={loading_one}
+            balance={user?.balance}
           />
-          <DailyBooster
-            icon={<FlashIcon size={28} color={"yellow"} />}
-            name={"Full Tank"}
-            remain_num={3}
-          />
-        </div>
-      </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-2xl text-white mt-4 mb-2 font-bold">
+              Your Daily boosters :
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <DailyBooster
+                icon={<FlameIcon size={28} color={"yellow"} />}
+                name={"Taping Guru"}
+                remain_num={1}
+              />
+              <DailyBooster
+                icon={<FlashIcon size={28} color={"yellow"} />}
+                name={"Full Tank"}
+                remain_num={3}
+              />
+            </div>
+          </div>
 
-      <h1 className="text-white text-2xl my-2">Boosters:</h1>
-      <div className="container--task">
-        {loading_two ? (
-          <CardLoading />
-        ) : (
-          <Card
-            icon={<Hand color={"yellow"} size={28} />}
-            // name={multiTap?.title}
-            name={"Multitap"}
-            coin_num={multiTap?.amount}
-            level={multiTap?.title}
-            onClick={() => setOpenMulti(true)}
-          />
-        )}
-        {loading_three ? (
-          <CardLoading />
-        ) : (
-          <Card
-            icon={<BatteryIcon color={"yellow"} size={28} />}
-            // name={energyLimit?.title}
-            name={"Energy Limit"}
-            coin_num={energyLimit?.amount}
-            level={energyLimit?.title}
-            onClick={() => setOpenEnergy(true)}
-          />
-        )}
+          <h1 className="text-white text-2xl my-2">Boosters:</h1>
+          <div className="container--task">
+            {loading_two ? (
+              <CardLoading />
+            ) : (
+              <Card
+                icon={<Hand color={"yellow"} size={28} />}
+                // name={multiTap?.title}
+                name={"Multitap"}
+                coin_num={multiTap?.amount}
+                level={multiTap?.title}
+                onClick={() => setOpenMulti(true)}
+              />
+            )}
+            {loading_three ? (
+              <CardLoading />
+            ) : (
+              <Card
+                icon={<BatteryIcon color={"yellow"} size={28} />}
+                // name={energyLimit?.title}
+                name={"Energy Limit"}
+                coin_num={energyLimit?.amount}
+                level={energyLimit?.title}
+                onClick={() => setOpenEnergy(true)}
+              />
+            )}
 
-        {loading_four ? (
-          <CardLoading />
-        ) : (
-          <Card
-            icon={<FlashIcon color={"yellow"} size={28} />}
-            // name={recharging?.title}
-            name={"Recharging Speed"}
-            coin_num={recharging?.amount}
-            level={recharging?.title}
-            onClick={() => setOpenRecharging(true)}
-          />
-        )}
-        {loading_five ? (
-          <CardLoading />
-        ) : (
-          <Card
-            icon={<Robot color={"yellow"} size={28} />}
-            // name={bot?.title}
-            name={"Tap Bot"}
-            coin_num={bot?.amount}
-            onClick={() => setOpenBot(true)}
-          />
-        )}
-      </div>
-      {/* Modals */}
-      {openMulti && (
-        <Modal
-          setOpenModal={setOpenMulti}
-          openModal={openMulti}
-          loading={loading_two}
-          icon={<Hand color={"yellow"} size={58} />}
-          boostTitle={"Energy Limit"}
-          boostDescription={"Increase amount of TAP you can earn per one tap."}
-          boostTapInfo={`+${multiTap?.unit} per tap for each level.`}
-          boostTokenRequired={multiTap?.amount}
-          boostLevel={multiTap?.title}
-          balance={token?.amount}
-          onClick={handleMulti}
-        ></Modal>
-      )}
-      {openEnergy && (
-        <Modal
-          setOpenModal={setOpenEnergy}
-          openModal={openEnergy}
-          loading={loading_three}
-          icon={<BatteryIcon color={"yellow"} size={58} />}
-          boostTitle={"Energy Limit"}
-          boostDescription={"Increase amount of TAP you can earn per one tap."}
-          boostTapInfo={`+${energyLimit?.unit} per tap for each level.`}
-          boostTokenRequired={energyLimit?.amount}
-          boostLevel={energyLimit?.title}
-          balance={token?.amount}
-          onClick={handleEnergyLimit}
-        ></Modal>
-      )}
+            {loading_four ? (
+              <CardLoading />
+            ) : (
+              <Card
+                icon={<FlashIcon color={"yellow"} size={28} />}
+                // name={recharging?.title}
+                name={"Recharging Speed"}
+                coin_num={recharging?.amount}
+                level={recharging?.title}
+                onClick={() => setOpenRecharging(true)}
+              />
+            )}
+            {loading_five ? (
+              <CardLoading />
+            ) : (
+              <Card
+                icon={<Robot color={"yellow"} size={28} />}
+                // name={bot?.title}
+                name={"Tap Bot"}
+                coin_num={bot?.amount}
+                onClick={() => setOpenBot(true)}
+              />
+            )}
+          </div>
+          {/* Modals */}
+          {openMulti && (
+            <Modal
+              setOpenModal={setOpenMulti}
+              openModal={openMulti}
+              loading={loading_two}
+              icon={<Hand color={"yellow"} size={58} />}
+              boostTitle={"Energy Limit"}
+              boostDescription={
+                "Increase amount of TAP you can earn per one tap."
+              }
+              boostTapInfo={`+${multiTap?.unit} per tap for each level.`}
+              boostTokenRequired={multiTap?.amount}
+              boostLevel={multiTap?.title}
+              balance={user?.balance}
+              onClick={handleMulti}
+            ></Modal>
+          )}
+          {openEnergy && (
+            <Modal
+              setOpenModal={setOpenEnergy}
+              openModal={openEnergy}
+              loading={loading_three}
+              icon={<BatteryIcon color={"yellow"} size={58} />}
+              boostTitle={"Energy Limit"}
+              boostDescription={
+                "Increase amount of TAP you can earn per one tap."
+              }
+              boostTapInfo={`+${energyLimit?.unit} per tap for each level.`}
+              boostTokenRequired={energyLimit?.amount}
+              boostLevel={energyLimit?.title}
+              balance={user?.balance}
+              onClick={handleEnergyLimit}
+            ></Modal>
+          )}
 
-      {openRecharging && (
-        <Modal
-          setOpenModal={setOpenRecharging}
-          openModal={openRecharging}
-          loading={loading_four}
-          icon={<FlashIcon color={"yellow"} size={58} />}
-          boostTitle={"Recharging Speed"}
-          boostDescription={"Increase amount of TAP you can earn per one tap."}
-          boostTapInfo={`+${recharging?.unit} per tap for each level.`}
-          boostTokenRequired={recharging?.amount}
-          boostLevel={recharging?.title}
-          balance={token?.amount}
-          onClick={handleRecharging}
-        ></Modal>
+          {openRecharging && (
+            <Modal
+              setOpenModal={setOpenRecharging}
+              openModal={openRecharging}
+              loading={loading_four}
+              icon={<FlashIcon color={"yellow"} size={58} />}
+              boostTitle={"Recharging Speed"}
+              boostDescription={
+                "Increase amount of TAP you can earn per one tap."
+              }
+              boostTapInfo={`+${recharging?.unit} per tap for each level.`}
+              boostTokenRequired={recharging?.amount}
+              boostLevel={recharging?.title}
+              balance={user?.balance}
+              onClick={handleRecharging}
+            ></Modal>
+          )}
+        </RootLayout>
       )}
-    </RootLayout>
+    </>
   );
 };
 

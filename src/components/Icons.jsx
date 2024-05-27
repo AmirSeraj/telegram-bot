@@ -5,6 +5,8 @@ import { FaHandPeace } from "react-icons/fa";
 import { FaRobot } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdBatteryCharging30 } from "react-icons/md";
+import { GiLaurelsTrophy } from "react-icons/gi";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 export const TaskIcon = () => {
   return (
@@ -48,4 +50,14 @@ export const Robot = ({ color, size }) => {
 
 export const Close = ({ color, size, onClick }) => {
   return <IoMdClose onClick={onClick} color={color} size={size} />;
+};
+
+export const Trophy = ({ color, size, onClick }) => {
+  return <GiLaurelsTrophy onClick={onClick} color={color} size={size} />;
+};
+
+export const ArrowRight = ({ color, size, onClick }) => {
+  return (
+    <MdOutlineKeyboardArrowRight onClick={onClick} color={color} size={size} />
+  );
 };

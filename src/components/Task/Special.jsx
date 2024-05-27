@@ -3,8 +3,9 @@ import Card from "../Card";
 import { TaskIcon } from "../Icons";
 import Modal from "../Modal";
 import CustomBtn from "../CustomBtn";
+import CardLoading from "../CardLoading";
 
-const Special = ({ specials }) => {
+const Special = ({ loadingCards, specials }) => {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const taskInfoRef = useRef(null);
@@ -31,35 +32,38 @@ const Special = ({ specials }) => {
 
   return (
     <>
-      {/* {specials.map((task, index) => (
-        <Card
-          onClick={() => handleDetails(task.id)}
-          icon={<TaskIcon />}
-          name={task.name}
-          coin_num={task.score_num}
-        />
-      ))} */}
-      <Card
-        onClick={() => handleGetTaskDetails(1)}
-        icon={<TaskIcon />}
-        name={"Join Our Socials"}
-        coin_num={200000}
-      />
-      <Card
-        icon={<TaskIcon />}
-        name={"Connect Solana Wallet"}
-        coin_num={100000}
-      />
-      <Card
-        icon={<TaskIcon />}
-        name={"Never Miss Key Insight!"}
-        coin_num={300000}
-      />
-      <Card
-        icon={<TaskIcon />}
-        name={"Never Miss Key Insight!"}
-        coin_num={300000}
-      />
+      {loadingCards ? (
+        <>
+          <CardLoading />
+          <CardLoading />
+          <CardLoading />
+          <CardLoading />
+        </>
+      ) : (
+        <>
+          <Card
+            // onClick={() => handleGetTaskDetails(1)}
+            icon={<TaskIcon />}
+            name={"Join Our Socials"}
+            coin_num={200000}
+          />
+          <Card
+            icon={<TaskIcon />}
+            name={"Connect Solana Wallet"}
+            coin_num={100000}
+          />
+          <Card
+            icon={<TaskIcon />}
+            name={"Never Miss Key Insight!"}
+            coin_num={300000}
+          />
+          <Card
+            icon={<TaskIcon />}
+            name={"Never Miss Key Insight!"}
+            coin_num={300000}
+          />
+        </>
+      )}
       {openModal && (
         <Modal
           setOpenModal={setOpenModal}

@@ -9,9 +9,10 @@ import StatsPage from "./pages/StatsPage";
 import { TelegramProvider } from "./context/TelegramContext";
 import socketIO from "socket.io-client";
 import { useEffect } from "react";
+import TrophyPage from "./pages/TrophyPage";
 
 // const socket = socketIO.connect("http://localhost:4000")
-const socket = socketIO.connect("http://192.168.88.166:8000");
+const socket = socketIO.connect("http://192.168.88.168:8000");
 
 function App() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
           <Route path="/tap" exact element={<TapPage socket={socket} />} />
           <Route path="/boost" exact element={<BoostPage />} />
           <Route path="/stats" exact element={<StatsPage />} />
+          <Route path="/trophy" exact element={<TrophyPage />} />
         </Routes>
       </TelegramProvider>
     </div>

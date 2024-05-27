@@ -1,32 +1,25 @@
 .loader {
-  width: 48px;
-  height: 48px;
-  border: 3px solid #fff;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  display: inline-block;
+  background-color: #fff;
+  box-shadow: 32px 0 #fff, -32px 0 #fff;
   position: relative;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-}
-.loader::after {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 3px solid;
-  border-color: #ff3d00 transparent;
+  animation: flash 0.5s ease-out infinite alternate;
 }
 
-@keyframes rotation {
+@keyframes flash {
   0% {
-    transform: rotate(0deg);
+    background-color: #FFF2;
+    box-shadow: 32px 0 #FFF2, -32px 0 #FFF;
+  }
+  50% {
+    background-color: #FFF;
+    box-shadow: 32px 0 #FFF2, -32px 0 #FFF2;
   }
   100% {
-    transform: rotate(360deg);
+    background-color: #FFF2;
+    box-shadow: 32px 0 #FFF, -32px 0 #FFF2;
   }
 }
+      
