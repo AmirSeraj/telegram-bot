@@ -24,7 +24,8 @@ const Home = ({ socket }) => {
   const [loadingEnergy, setLoadingEnergy] = useState(false);
   const [loadingRecharging, setLoadingRecharging] = useState(false);
   const [loadingLastEnergy, setLoadingLastEnergy] = useState(false);
-  const [currentSpark, setCurrentSpark] = useState(100);
+  const [currentSpark, setCurrentSpark] = useState(null);
+  const [initialSpark, setInitialSpark] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const Home = ({ socket }) => {
         const result = await response.json();
         console.log("result", result);
         setCurrentSpark(Number(result?.energyLast));
+        setInitialSpark(Number(result?.energyLast));
         setLoadingLastEnergy(false);
       } catch (error) {
         setLoadingLastEnergy(false);
@@ -135,9 +137,9 @@ const Home = ({ socket }) => {
       "id",
       {
         id: user?.user?.uuid_name,
-        "energy limit": Number(energyUnit?.size),
-        "energy speed": Number(increaseSpeed?.unit),
-        "last energy score": Number(currentSpark),
+        "limit": Number(energyUnit?.size),
+        "speed": Number(increaseSpeed?.unit),
+        "energy": Number(currentSpark),
       },
       (data) => {}
     );
@@ -148,13 +150,14 @@ const Home = ({ socket }) => {
       "id",
       {
         id: user?.user?.uuid_name,
-        "energy limit": Number(energyUnit?.size),
-        "energy speed": Number(increaseSpeed?.unit),
-        "last energy score": Number(currentSpark),
+        "limit": Number(energyUnit?.size),
+        "speed": Number(increaseSpeed?.unit),
+        "energy": Number(initialSpark),
       },
       (data) => {}
     );
-  }, [user?.user?.uuid_name, energyUnit?.size, increaseSpeed?.unit]);
+  }, [user?.user?.uuid_name, energyUnit?.size, increaseSpeed?.unit, initialSpark]);
+
 
   const handleCoinClick = () => {
     socket.emit(
