@@ -46,7 +46,7 @@ const BoostPage = () => {
   const [openMulti, setOpenMulti] = useState(false);
   const [openEnergy, setOpenEnergy] = useState(false);
   const [openRecharging, setOpenRecharging] = useState(false);
-  const [openBot, setOpenBot] = useState(false);
+  // const [openBot, setOpenBot] = useState(false);
 
   const user = useTelegram();
 
@@ -149,7 +149,7 @@ const BoostPage = () => {
             "info-user": user?.user?.uuid_name,
           },
         });
-        const result = await response.json();
+        await response.json();
         await user?.getBalance();
         await getMultiTap();
         setLoading_one(false);
@@ -172,7 +172,7 @@ const BoostPage = () => {
             "info-user": user?.user?.uuid_name,
           },
         });
-        const result = await response.json();
+        await response.json();
         await user?.getBalance();
         await getEnergyLimit();
         setLoading_one(false);
@@ -195,7 +195,7 @@ const BoostPage = () => {
             "info-user": user?.user?.uuid_name,
           },
         });
-        const result = await response.json();
+        await response.json();
         await user?.getBalance();
         await getRecharging();
         setLoading_one(false);
@@ -296,7 +296,7 @@ const BoostPage = () => {
                 // name={bot?.title}
                 name={"Tap Bot"}
                 coin_num={bot?.amount}
-                onClick={() => setOpenBot(true)}
+                // onClick={() => setOpenBot(true)}
               />
             )}
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
+const CoinIcon = ({ increment, onCoinClick, currentSpark }) => {
   const [texts, setTexts] = useState([]);
 
   const fadeOutText = (index) => {
