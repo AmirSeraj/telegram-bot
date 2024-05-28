@@ -7,6 +7,7 @@ import Balance from "../../components/Balance/Balance";
 import { useTelegram } from "../../hooks/useTelegram";
 import ProgressBarLoading from "../../components/TapLoading/ProgressBarLoading";
 import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
+import Loading from "../../components/LoadingComponent/Loading";
 
 /**PATH */
 const energy_unit_path = process.env.REACT_APP_URL + "api/landing/info-energy";
@@ -26,24 +27,23 @@ const Home = ({ socket }) => {
   const [loadingLastEnergy, setLoadingLastEnergy] = useState(false);
   const [currentSpark, setCurrentSpark] = useState(null);
   const [initialSpark, setInitialSpark] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const scoreRef = useRef(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 500);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
-    user?.getBalance();
+    // user?.getBalance();
     getEnergyUnit();
     getRechargingSpeed();
     getLastEnergy();
-    setBalance(user?.balance);
-    console.log("balance", user?.balance);
-  }, [loading]);
+    setBalance(Number(user?.balance));
+  }, [user?.rootLoading]);
 
   /**3.energy limit or energy unit , how many units, energy increases when click on coin */
   /**
@@ -60,7 +60,8 @@ const Home = ({ socket }) => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            // "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -83,7 +84,8 @@ const Home = ({ socket }) => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            // "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -108,7 +110,7 @@ const Home = ({ socket }) => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -137,21 +139,20 @@ const Home = ({ socket }) => {
     socket.emit(
       "id",
       {
-        id: user?.user?.uuid_name,
+        id: user?.userTeleId,
         limit: Number(energyUnit?.size),
         speed: Number(increaseSpeed?.unit),
         energy: Number(currentSpark),
       },
       (data) => {}
     );
-
   }, [socket]);
 
   useEffect(() => {
     socket.emit(
       "id",
       {
-        id: user?.user?.uuid_name,
+        id: user?.userTeleId,
         limit: Number(energyUnit?.size),
         speed: Number(increaseSpeed?.unit),
         energy: Number(initialSpark),
@@ -159,7 +160,7 @@ const Home = ({ socket }) => {
       (data) => {}
     );
   }, [
-    user?.user?.uuid_name,
+    user?.userTeleId,
     energyUnit?.size,
     increaseSpeed?.unit,
     initialSpark,
@@ -169,7 +170,7 @@ const Home = ({ socket }) => {
     socket.emit(
       "tap",
       {
-        id: user?.user?.uuid_name,
+        id: user?.userTeleId,
         level: user?.level?.title,
       },
       function (data) {
@@ -190,28 +191,32 @@ const Home = ({ socket }) => {
           //   "radial-gradient(ellipse at 0% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
           // }
         >
-          <div className="flex flex-col items-center justify-around w-full h-full">
-            <Balance balance={balance} cup={true} />
+          {user?.loading ? (  /**this is balance loading */
+            <Loading />
+          ) : (
+            <div className="flex flex-col items-center justify-around w-full h-full">
+              <Balance balance={balance} cup={true} />
 
-            <CoinIcon
-              balance={balance}
-              increment={user?.level?.unit}
-              // increment={scoreRef.current}
-              onCoinClick={handleCoinClick}
-              currentSpark={currentSpark}
-            />
+              <CoinIcon
+                balance={balance}
+                increment={user?.level?.unit}
+                // increment={scoreRef.current}
+                onCoinClick={handleCoinClick}
+                currentSpark={currentSpark}
+              />
 
-            {/* {loadingRecharging ? (
+              {/* {loadingRecharging ? (
           <ProgressBarLoading />
         ) : ( */}
-            <ScoreBar
-              maxLimitSpark={energyUnit?.size}
-              incrementSparkNumber={Number(increaseSpeed?.unit)}
-              currentSpark={currentSpark}
-              // setCurrentSpark={setCurrentSpark}
-            />
-            {/* )} */}
-          </div>
+              <ScoreBar
+                maxLimitSpark={energyUnit?.size}
+                incrementSparkNumber={Number(increaseSpeed?.unit)}
+                currentSpark={currentSpark}
+                // setCurrentSpark={setCurrentSpark}
+              />
+              {/* )} */}
+            </div>
+          )}
         </RootLayout>
       )}
     </>

@@ -8,6 +8,7 @@ import Leagues from "../../components/Task/Leagues";
 import RefTasks from "../../components/Task/RefTasks";
 import { useTelegram } from "../../hooks/useTelegram";
 import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
+import Loading from "../../components/LoadingComponent/Loading";
 
 const TaskPage = () => {
   const [special, setSpecial] = useState(false);
@@ -15,6 +16,7 @@ const TaskPage = () => {
   const [refTasks, setRefTasks] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [balance, setBalance] = useState(0);
   const user = useTelegram();
 
   const getTasks_Specials = async () => {
@@ -40,6 +42,7 @@ const TaskPage = () => {
   useEffect(() => {
     setSpecial(true);
     getTasks_Specials();
+    setBalance(user?.balance);
   }, []);
 
   const handleActiveTab = (val) => {
@@ -71,32 +74,40 @@ const TaskPage = () => {
           //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
           // }
         >
-          <Balance cup={true} border={true} balance={user.balance} />
-          <div className="border border-gray-500 p-1 rounded-lg w-full h-14 mt-5 grid grid-cols-3 gap-1">
-            <Tab
-              className={special && "!bg-[#ef49c6cc]/60"}
-              onClick={() => handleActiveTab("special")}
-              title={"Special"}
-            />
-            <Tab
-              className={league && "!bg-[#ef49c6cc]/60"}
-              onClick={() => handleActiveTab("leagues")}
-              title={"Leagues"}
-              notComplete={true}
-            />
-            <Tab
-              className={refTasks && "!bg-[#ef49c6cc]/60"}
-              onClick={() => handleActiveTab("ref_tasks")}
-              title={"Ref Tasks"}
-            />
-          </div>
-          <div className="container--task">
-            {special && (
-              <Special specials={tasks.specials} loadingCards={loading} />
-            )}
-            {league && <Leagues />}
-            {refTasks && <RefTasks />}
-          </div>
+          {user?.loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Balance cup={true} border={true} balance={balance} />
+              <div className="border border-gray-500 p-1 rounded-lg w-full h-14 mt-5 grid grid-cols-3 gap-1">
+                <Tab
+                  className={special && "!bg-[#ef49c6cc]/60"}
+                  onClick={() => handleActiveTab("special")}
+                  title={"Special"}
+                />
+                <Tab
+                  className={league && "!bg-[#ef49c6cc]/60"}
+                  onClick={() => handleActiveTab("leagues")}
+                  title={"Leagues"}
+                  notComplete={true}
+                />
+                <Tab
+                  className={refTasks && "!bg-[#ef49c6cc]/60"}
+                  onClick={() => handleActiveTab("ref_tasks")}
+                  title={"Ref Tasks"}
+                />
+              </div>
+              <div className="container--task">
+                {special && (
+                  <Special specials={tasks.specials} loadingCards={loading} />
+                )}
+                {league && (
+                  <Leagues balance={balance} setBalance={setBalance} />
+                )}
+                {refTasks && <RefTasks />}
+              </div>
+            </>
+          )}
         </RootLayout>
       )}
     </>

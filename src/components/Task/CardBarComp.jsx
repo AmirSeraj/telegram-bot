@@ -29,7 +29,7 @@ const CardBarComp = ({
           </div>
         </div>
         <button
-          onClick={onclick}
+          onClick={onCLick}
           className={`text-xs py-2 px-3 border border-gray-800 rounded-lg ${
             disabled
               ? "text-gray-600"

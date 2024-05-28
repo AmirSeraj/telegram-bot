@@ -8,7 +8,7 @@ import { FindIndexByName, images } from "../Trophy/data";
 const path = process.env.REACT_APP_URL + "api/landing/all-trophy";
 /**PATH */
 
-const Leagues = () => {
+const Leagues = ({balance, setBalance}) => {
   const [loading, setLoading] = useState(false);
   const [trophies, setTrophies] = useState([]);
   const user = useTelegram();
@@ -16,11 +16,12 @@ const Leagues = () => {
   const getUserTrophies = async () => {
     setLoading(true);
     try {
-      const response = await fetch(path + user?.user?.uuid_name, {
+      const response = await fetch(path, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
+          "info-user": user?.userTeleId,
         },
       });
       const leagues = await response.json();
@@ -33,7 +34,7 @@ const Leagues = () => {
   };
 
   useEffect(() => {
-    if (user?.user?.uuid_name) {
+    if (user?.userTeleId) {
       getUserTrophies();
     }
   }, []);
@@ -60,9 +61,10 @@ const Leagues = () => {
                 disabled={
                   Number(user?.balance) > Number(trophy.amount) ? false : true
                 }
-                present_value={Number(user?.balance)}
+                // present_value={Number(user?.balance)}
+                present_value={Number(balance)}
                 final_value={Number(trophy.amount)}
-                onCli
+                onCLick={(prevState) => setBalance(prevState + Number(trophy.amount))}
               />
             );
           })}

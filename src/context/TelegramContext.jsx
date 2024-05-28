@@ -154,6 +154,7 @@ const TelegramProvider = ({ children }) => {
     user_trophy: trophy?.title,
     loadingTrophy,
     level: user?.level,
+    userTeleId: userId
   };
 
   return (
