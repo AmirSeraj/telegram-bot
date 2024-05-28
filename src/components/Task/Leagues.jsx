@@ -29,7 +29,6 @@ const Leagues = ({balance, setBalance}) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("error2", error);
     }
   };
 

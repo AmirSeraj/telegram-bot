@@ -1,11 +1,10 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CoinIcon from "../../components/Tap/CoinIcon";
 import ScoreBar from "../../components/Tap/ScoreBar";
 import bgImg from "../../assets/bg_images/bg-2.png";
 import RootLayout from "../../components/Layout";
 import Balance from "../../components/Balance/Balance";
 import { useTelegram } from "../../hooks/useTelegram";
-import ProgressBarLoading from "../../components/TapLoading/ProgressBarLoading";
 import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
 import Loading from "../../components/LoadingComponent/Loading";
 
@@ -22,20 +21,12 @@ const Home = ({ socket }) => {
   const [energyUnit, setEnergyUnit] = useState(0);
   const [increaseSpeed, setIncreaseSpeed] = useState(0);
 
-  const [loadingEnergy, setLoadingEnergy] = useState(false);
-  const [loadingRecharging, setLoadingRecharging] = useState(false);
-  const [loadingLastEnergy, setLoadingLastEnergy] = useState(false);
+  // const [loadingEnergy, setLoadingEnergy] = useState(false);
+  // const [loadingRecharging, setLoadingRecharging] = useState(false);
+  // const [loadingLastEnergy, setLoadingLastEnergy] = useState(false);
   const [currentSpark, setCurrentSpark] = useState(null);
   const [initialSpark, setInitialSpark] = useState(null);
-  // const [loading, setLoading] = useState(true);
-  const scoreRef = useRef(null);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 500);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  // const scoreRef = useRef(null);
 
   useEffect(() => {
     // user?.getBalance();
@@ -45,14 +36,8 @@ const Home = ({ socket }) => {
     setBalance(Number(user?.balance));
   }, [user?.rootLoading]);
 
-  /**3.energy limit or energy unit , how many units, energy increases when click on coin */
-  /**
-   * size : "15000" ===> energy limit like 50
-   * title : "silvwer" ===> level title : no need in this page
-   * unit : 4 =====> amount of increase per tab
-   */
   const getEnergyUnit = async () => {
-    setLoadingEnergy(true);
+    // setLoadingEnergy(true);
     if (user?.user?.uuid_name) {
       try {
         const response = await fetch(energy_unit_path, {
@@ -60,23 +45,20 @@ const Home = ({ socket }) => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            // "info-user": user?.user?.uuid_name,
             "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
         setEnergyUnit(result);
-        console.log("energy_unit", result);
-        setLoadingEnergy(false);
+        // setLoadingEnergy(false);
       } catch (error) {
-        setLoadingEnergy(false);
-        console.log("error2", error);
+        // setLoadingEnergy(false);
       }
     }
   };
 
   const getLastEnergy = async () => {
-    setLoadingLastEnergy(true);
+    // setLoadingLastEnergy(true);
     if (user?.user?.uuid_name) {
       try {
         const response = await fetch(last_energy_path, {
@@ -89,20 +71,18 @@ const Home = ({ socket }) => {
           },
         });
         const result = await response.json();
-        console.log("result", result);
         setCurrentSpark(Number(result?.energyLast));
         setInitialSpark(Number(result?.energyLast));
-        setLoadingLastEnergy(false);
+        // setLoadingLastEnergy(false);
       } catch (error) {
-        setLoadingLastEnergy(false);
-        console.log("error2", error);
+        // setLoadingLastEnergy(false);
       }
     }
   };
 
   /**4.speed of increase or recharging speed */
   const getRechargingSpeed = async () => {
-    setLoadingRecharging(true);
+    // setLoadingRecharging(true);
     if (user?.user?.uuid_name) {
       try {
         const response = await fetch(coin_fill_speed_path, {
@@ -114,19 +94,16 @@ const Home = ({ socket }) => {
           },
         });
         const result = await response.json();
-        console.log("increase_speed", result);
         setIncreaseSpeed(result); ////balanceRef
-        setLoadingRecharging(false);
+        // setLoadingRecharging(false);
       } catch (error) {
-        setLoadingRecharging(false);
-        console.log("error2", error);
+        // setLoadingRecharging(false);
       }
     }
   };
 
   useEffect(() => {
     socket.on("top", (data) => {
-      console.log("ddddd", data);
       setBalance((prevState) => prevState + Number(data));
       // scoreRef.current = data;
       // setCurrentSpark((prevSpark) => Math.max(prevSpark - data, 0));
@@ -174,7 +151,6 @@ const Home = ({ socket }) => {
         level: user?.level?.title,
       },
       function (data) {
-        console.log("data:", data);
       }
     );
     // setBalance((prevBalance) => prevBalance + Number(user?.level?.unit));

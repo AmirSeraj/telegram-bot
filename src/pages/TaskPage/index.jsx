@@ -35,7 +35,6 @@ const TaskPage = () => {
       return tasks;
     } catch (error) {
       setLoading(false);
-      console.log("error2", error);
     }
   };
 

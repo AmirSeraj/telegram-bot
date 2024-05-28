@@ -19,7 +19,6 @@ const Modal = ({
   balance,
   onClick
 }) => {
-  console.log('balance:',balance, 'boostTokenRequired', boostTokenRequired);
   const disabled = Number(balance) < Number(boostTokenRequired);
   return (
     <div

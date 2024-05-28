@@ -25,6 +25,7 @@ const TelegramProvider = ({ children }) => {
   const [balance, setBalance] = useState(Number(initialState.balance));
   const [trophy, setTrophy] = useState(null);
   const [loadingTrophy, setLoadingTrophy] = useState(initialState.loading);
+  const [teleAccountInfo,setTeleAccountInfo] = useState(null)
   const location = useLocation();
   useEffect(() => {
     setRootLoading(true);
@@ -36,50 +37,50 @@ const TelegramProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  // useEffect(() => {
-  //   const tele = window.Telegram.WebApp;
-  //   if (tele) {
-  //     tele.ready();
-  //     const accountInfo = tele.initData;
-  //     const userInfo = JSON.parse(
-  //       '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-  //       function (key, value) {
-  //         return key === "" ? value : decodeURIComponent(value);
-  //       }
-  //     );
-  //     setTeleAccountInfo(userInfo);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const tele = window.Telegram.WebApp;
+    if (tele) {
+      tele.ready();
+      const accountInfo = tele.initData;
+      const userInfo = JSON.parse(
+        '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+        function (key, value) {
+          return key === "" ? value : decodeURIComponent(value);
+        }
+      );
+      setTeleAccountInfo(userInfo);
+    }
+  }, []);
+  let userId;
+  useEffect(() => {
+    if (teleAccountInfo) {
+      userId = JSON.parse(teleAccountInfo.user).id;
+      console.log('errr',typeof userId);
+      const getUserInfo = async () => {
+        try {
+          const response = await fetch(
+            process.env.REACT_APP_URL + "api/auth/login-register",
+            {
+              method: "POST",
+              headers: {
+                "Content-type": "application/json",
+                'Accept': "application/json",
+              },
+              body: JSON.stringify({uuid_name : userId})
+            }
+          );
+          const userInfo = await response.json();
+          setUser(userInfo);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getUserInfo();
+      console.log("trttrytyyt", user);
+    }
+  }, [teleAccountInfo]);
 
-  // useEffect(() => {
-  //   if (teleAccountInfo) {
-  //     const userId = JSON.parse(teleAccountInfo.user).id;
-  //     console.log('errr',typeof userId);
-  //     const getUserInfo = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           process.env.REACT_APP_URL + "api/auth/login-register",
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-type": "application/json",
-  //               'Accept': "application/json",
-  //             },
-  //             body: JSON.stringify({uuid_name : userId})
-  //           }
-  //         );
-  //         const userInfo = await response.json();
-  //         setUser(userInfo);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     getUserInfo();
-  //     console.log("trttrytyyt", user);
-  //   }
-  // }, [teleAccountInfo]);
-
-  const userId = 98798577877;
+  // const userId = 98798577877;
   const getUserInfo = async () => {
     try {
       const response = await fetch(user_info_path + userId, {
@@ -92,7 +93,6 @@ const TelegramProvider = ({ children }) => {
       const userInfo = await response.json();
       setUser(userInfo);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -113,7 +113,6 @@ const TelegramProvider = ({ children }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("error2", error);
     }
   };
 
@@ -135,7 +134,6 @@ const TelegramProvider = ({ children }) => {
       setLoadingTrophy(false);
     } catch (error) {
       setLoadingTrophy(false);
-      console.log("error2", error);
     }
   };
 

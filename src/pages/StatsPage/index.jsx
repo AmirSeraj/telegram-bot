@@ -14,15 +14,7 @@ const path = process.env.REACT_APP_URL + "api/landing/info-stats";
 const StatsPage = () => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState([]);
-
-  /**in real decomment these */
   const user = useTelegram();
-  // useEffect(() => {
-  //   const telegramInfo = JSON.parse(telegram.user);
-  //   const userId = telegramInfo.id;
-  //   console.log("ueee", userId);
-  // }, [telegram]);
-
   useEffect(() => {
     const getStats = async () => {
       setLoading(true);
@@ -41,7 +33,6 @@ const StatsPage = () => {
           setLoading(false);
         } catch (error) {
           setLoading(false);
-          console.log("error2", error);
         }
       }
     };

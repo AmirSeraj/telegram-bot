@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
-  // console.log('incre',increment);
   const [texts, setTexts] = useState([]);
 
   const fadeOutText = (index) => {
@@ -14,7 +13,6 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
     if (currentSpark === 0) {
       return;
     }
-    // if (increment) {
       const { clientX, clientY } = event;
       const newText = {
         value: `+${increment}`,
@@ -22,19 +20,16 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
         opacity: 1,
       };
       setTexts((prevTexts) => [...prevTexts, newText]);
-    // }
   };
 
   function handleClick() {
     if (currentSpark === 0) {
       return;
     }
-    // balance = Math.round((balance + increment) * 100) / 100;
     onCoinClick();
   }
 
   useEffect(() => {
-    // Simulate the floating effect using setInterval
     const intervalId = setInterval(() => {
       setTexts((prevTexts) =>
         prevTexts.map((text) => ({
@@ -44,12 +39,10 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
       );
     }, 10);
 
-    // Clear the interval after a short duration
     setTimeout(() => {
       clearInterval(intervalId);
     }, 500);
 
-    // Fade out the last text after it's added
     if (texts.length > 0) {
       const lastTextIndex = texts.length - 1;
       setTimeout(() => {
@@ -57,7 +50,6 @@ const CoinIcon = ({ balance, increment, onCoinClick, currentSpark }) => {
       }, 1000);
     }
 
-    // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
   }, [texts]);
 

@@ -26,7 +26,6 @@ const Special = ({ loadingCards, specials }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("error2", error);
     }
   };
 

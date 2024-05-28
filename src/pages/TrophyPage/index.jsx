@@ -25,12 +25,10 @@ const TrophyPage = () => {
         },
       });
       const result = await response.json();
-      console.log("trophies", result);
       setTrophies(result?.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("error2", error);
     }
   };
 

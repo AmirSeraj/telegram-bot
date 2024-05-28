@@ -48,10 +48,8 @@ const BoostPage = () => {
   const [openRecharging, setOpenRecharging] = useState(false);
   const [openBot, setOpenBot] = useState(false);
 
-  /**user */
   const user = useTelegram();
 
-  /**2.get Multi tap */
   const getMultiTap = async () => {
     setLoading_two(true);
     if (user?.user?.uuid_name) {
@@ -69,7 +67,6 @@ const BoostPage = () => {
         setLoading_two(false);
       } catch (error) {
         setLoading_two(false);
-        console.log("error2", error);
       }
     }
   };
@@ -92,7 +89,6 @@ const BoostPage = () => {
         setLoading_three(false);
       } catch (error) {
         setLoading_three(false);
-        console.log("error2", error);
       }
     }
   };
@@ -111,11 +107,10 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        setRecharging(result); ////balanceRef
+        setRecharging(result);
         setLoading_four(false);
       } catch (error) {
         setLoading_four(false);
-        console.log("error2", error);
       }
     }
   };
@@ -134,16 +129,14 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        setBot(result); ////balanceRef
+        setBot(result);
         setLoading_five(false);
       } catch (error) {
         setLoading_five(false);
-        console.log("error2", error);
       }
     }
   };
 
-  /***click func */
   const handleMulti = async () => {
     setLoading_one(true);
     if (user?.user?.uuid_name) {
@@ -157,14 +150,12 @@ const BoostPage = () => {
           },
         });
         const result = await response.json();
-        console.log('resss',result);
         await user?.getBalance();
         await getMultiTap();
         setLoading_one(false);
         setOpenMulti(false);
       } catch (error) {
         setLoading_one(false);
-        console.log("error2", error);
       }
     }
   };
@@ -184,12 +175,10 @@ const BoostPage = () => {
         const result = await response.json();
         await user?.getBalance();
         await getEnergyLimit();
-        // console.log("increase_energy", result);
         setLoading_one(false);
         setOpenEnergy(false);
       } catch (error) {
         setLoading_one(false);
-        console.log("error2", error);
       }
     }
   };
@@ -209,12 +198,10 @@ const BoostPage = () => {
         const result = await response.json();
         await user?.getBalance();
         await getRecharging();
-        // console.log("increase_energy", result);
         setLoading_one(false);
         setOpenRecharging(false);
       } catch (error) {
         setLoading_one(false);
-        console.log("error2", error);
       }
     }
   };
