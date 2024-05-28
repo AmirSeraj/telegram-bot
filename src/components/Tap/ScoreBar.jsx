@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { useEffect } from "react";
 import { BsLightningFill } from "react-icons/bs";
 
 const ScoreBar = ({

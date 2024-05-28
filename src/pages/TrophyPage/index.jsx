@@ -9,7 +9,7 @@ import TrophySlider from "../../components/Trophy/TrophySlider";
 const path = process.env.REACT_APP_URL + "api/landing/all-trophy";
 /**PATH */
 
-const TrophyPage = ({ trophy }) => {
+const TrophyPage = () => {
   const user = useTelegram();
   const [loading, setLoading] = useState(false);
   const [trophies, setTrophies] = useState([]);
@@ -36,6 +36,7 @@ const TrophyPage = ({ trophy }) => {
 
   useEffect(() => {
     getTrophies();
+    user.getBalance();
   }, []);
 
   return (
@@ -49,19 +50,13 @@ const TrophyPage = ({ trophy }) => {
           //   "radial-gradient(ellipse at 0% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
           // }
         >
-          <div className="flex flex-col justify-between items-center w-full h-full p-0">
-            <div className="flex justify-center items-center flex-col gap-2">
-              <h1 className="text-white font-bold text-2xl">
-                {user?.user_trophy}
-              </h1>
-              <p className="text-slate-400 text-center text-sm">
-                Your number of shares determines the league you enter.
-              </p>
-            </div>
-            {/* <div className="flex justify-center items-center w-full"> */}
-              <TrophySlider trophies={trophies} loading={loading} />
-            {/* </div>{" "} */}
-            <div>cc</div>
+          <div className="w-full h-full">
+            <TrophySlider
+              trophies={trophies}
+              loading={loading}
+              user_trophy={user?.user_trophy}
+              user_balance={user?.balance}
+            />
           </div>
         </RootLayout>
       )}

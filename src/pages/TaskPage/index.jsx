@@ -71,7 +71,7 @@ const TaskPage = () => {
           //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -7%, transparent 40%)"
           // }
         >
-          <Balance cup={true} border={true} />
+          <Balance cup={true} border={true} balance={user.balance} />
           <div className="border border-gray-500 p-1 rounded-lg w-full h-14 mt-5 grid grid-cols-3 gap-1">
             <Tab
               className={special && "!bg-[#ef49c6cc]/60"}

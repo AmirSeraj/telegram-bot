@@ -1,49 +1,52 @@
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { FindIndexByName, images } from "./data";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 
 // import required modules
 import { Navigation } from "swiper/modules";
+import ScoreBarComp from "../ScoreBarComp";
 
-const TrophySlider = ({ trophies, loading }) => {
-  console.log(trophies);
+const TrophySlider = ({ trophies, loading, user_trophy, user_balance }) => {
+  const UserTrophyIndex = Number(FindIndexByName(user_trophy));
   return (
     <Swiper
       modules={[Navigation]}
       spaceBetween={0}
-      className={'w-[80vw]'}
+      className={"w-[80vw] h-full"}
       grabCursor={true}
       mousewheel={true}
       centeredSlides={true}
       navigation={true}
       slidesPerView={1}
       freeMode={true}
+      initialSlide={UserTrophyIndex}
     >
-      <SwiperSlide
-        // key={index}
-        // className={`rounded-[2rem] bg-[#1C1C41] border-[0.1rem] border-[#312E81] hover:bg-[#262458] hover:shadow-md shadow-gray-200`}
-      >
-        <div className="px-6 py-4 h-1/2">
-          <p className="text-[#D9F99D] mb-2 font-bold text-xl">ddddd</p>
-          <span className="text-white text-[1rem] font-light overflow-hidden h-[150px] w-full inline-block">
-            
-          </span>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide
-        // key={index}
-        // className={`w-full rounded-[2rem] bg-[#1C1C41] border-[0.1rem] border-[#312E81] hover:bg-[#262458] hover:shadow-md shadow-gray-200`}
-      >
-        <div className="px-6 py-4 h-1/2">
-          <p className="text-[#D9F99D] mb-2 font-bold text-xl">aaaa</p>
-          <span className="text-white text-[1rem] font-light overflow-hidden h-[150px] w-full inline-block">
-            
-          </span>
-        </div>
-      </SwiperSlide>
+      {trophies?.map((item, index) => (
+        <SwiperSlide className="w-full h-full">
+          <div className="w-full h-full flex flex-col items-center justify-around">
+            <div className="flex justify-center items-center flex-col gap-2">
+              <h1 className="text-white font-bold text-2xl">
+                {item?.title} League
+              </h1>
+              <p className="text-slate-400 text-center text-sm">
+                Your number of shares determines the league you enter.
+              </p>
+            </div>
+            <img src={images[index]?.src} alt={item?.title} />
+            {index !== UserTrophyIndex && (
+              <h1 className="font-bold text-white text-2xl">
+                From {Number(item?.amount).toLocaleString()}
+              </h1>
+            )}
+            {index === UserTrophyIndex && <div className="w-full"><ScoreBarComp present_value={user_balance} final_value={item?.amount} values={true} /></div>}
+          </div>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
