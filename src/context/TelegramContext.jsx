@@ -44,6 +44,7 @@ const TelegramProvider = ({ children }) => {
   console.log("tele", window.Telegram.WebApp);
 
   useEffect(() => {
+    console.log('rrrrr');
     if (tele) {
       tele.ready();
       const accountInfo = tele.initData;
