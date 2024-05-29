@@ -38,13 +38,13 @@ const TelegramProvider = ({ children }) => {
   }, [location.pathname]);
 
   // 1.
-  console.log("eeee", teleAccountInfo);
+  // console.log("eeee", teleAccountInfo);
   const userId = JSON.parse(teleAccountInfo.user).id;
-  const tele = window.Telegram.WebApp;
-  console.log("tele", window.Telegram.WebApp);
 
   useEffect(() => {
-    console.log('rrrrr');
+
+    const tele = window.Telegram?.WebApp;
+    console.log('rrrrr', window.Telegram);
     if (tele) {
       tele.ready();
       const accountInfo = tele.initData;
@@ -56,7 +56,7 @@ const TelegramProvider = ({ children }) => {
       );
       setTeleAccountInfo(userInfo);
     }
-  }, [tele]);
+  }, []);
 
   useEffect(() => {
     if (teleAccountInfo) {
