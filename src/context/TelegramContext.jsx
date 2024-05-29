@@ -25,7 +25,7 @@ const TelegramProvider = ({ children }) => {
   const [balance, setBalance] = useState(Number(initialState.balance));
   const [trophy, setTrophy] = useState(null);
   const [loadingTrophy, setLoadingTrophy] = useState(initialState.loading);
-  const [teleAccountInfo, setTeleAccountInfo] = useState(initialState.loading);
+  const [teleAccountInfo, setTeleAccountInfo] = useState([]);
   const location = useLocation();
   useEffect(() => {
     setRootLoading(true);
