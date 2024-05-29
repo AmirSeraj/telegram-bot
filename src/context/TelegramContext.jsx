@@ -25,6 +25,7 @@ const TelegramProvider = ({ children }) => {
   const [balance, setBalance] = useState(Number(initialState.balance));
   const [trophy, setTrophy] = useState(null);
   const [loadingTrophy, setLoadingTrophy] = useState(initialState.loading);
+  const [teleAccountInfo, setTeleAccountInfo] = useState(initialState.loading);
   const location = useLocation();
   useEffect(() => {
     setRootLoading(true);
@@ -36,57 +37,29 @@ const TelegramProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  // useEffect(() => {
-  //   const tele = window.Telegram.WebApp;
-  //   if (tele) {
-  //     tele.ready();
-  //     const accountInfo = tele.initData;
-  //     const userInfo = JSON.parse(
-  //       '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-  //       function (key, value) {
-  //         return key === "" ? value : decodeURIComponent(value);
-  //       }
-  //     );
-  //     setTeleAccountInfo(userInfo);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const tele = window.Telegram.WebApp;
+    if (tele) {
+      tele.ready();
+      const accountInfo = tele.initData;
+      const userInfo = JSON.parse(
+        '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+        function (key, value) {
+          return key === "" ? value : decodeURIComponent(value);
+        }
+      );
+      setTeleAccountInfo(userInfo);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   if (teleAccountInfo) {
-  //     const userId = JSON.parse(teleAccountInfo.user).id;
-  //     console.log('errr',typeof userId);
-  //     const getUserInfo = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           process.env.REACT_APP_URL + "api/auth/login-register",
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-type": "application/json",
-  //               'Accept': "application/json",
-  //             },
-  //             body: JSON.stringify({uuid_name : userId})
-  //           }
-  //         );
-  //         const userInfo = await response.json();
-  //         setUser(userInfo);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     getUserInfo();
-  //     console.log("trttrytyyt", user);
-  //   }
-  // }, [teleAccountInfo]);
-
-  const userId = 98798577877;
+  const userId = JSON.parse(teleAccountInfo.user).id;
   const getUserInfo = async () => {
     try {
       const response = await fetch(user_info_path + userId, {
         method: "GET",
         headers: {
+          "Content-type": "application/json",
           Accept: "application/json",
-          "Content-Type": "application/json",
         },
       });
       const userInfo = await response.json();
@@ -95,6 +68,37 @@ const TelegramProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (teleAccountInfo) {
+      getUserInfo();
+      handleGetBalance();
+      getTrophy();
+    }
+  }, [teleAccountInfo]);
+
+  // useEffect(() => {
+  //   getUserInfo();
+  //   handleGetBalance();
+  //   getTrophy();
+  // }, []);
+
+  // const userId = 98798577877;
+  // const getUserInfo = async () => {
+  //   try {
+  //     const response = await fetch(user_info_path + userId, {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const userInfo = await response.json();
+  //     setUser(userInfo);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handleGetBalance = async () => {
     setLoading(true);
@@ -139,12 +143,6 @@ const TelegramProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getUserInfo();
-    handleGetBalance();
-    getTrophy();
-  }, []);
-
   const values = {
     loading,
     rootLoading,
@@ -154,7 +152,7 @@ const TelegramProvider = ({ children }) => {
     user_trophy: trophy?.title,
     loadingTrophy,
     level: user?.level,
-    userTeleId: userId
+    userTeleId: userId,
   };
 
   return (
