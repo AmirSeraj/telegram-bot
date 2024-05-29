@@ -39,40 +39,40 @@ const TelegramProvider = ({ children }) => {
 
   // 1.
   // console.log("eeee", teleAccountInfo);
-  const userId = JSON.parse(teleAccountInfo.user).id;
+  // const userId = JSON.parse(teleAccountInfo.user).id;
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const tele = window.Telegram?.WebApp;
-    console.log('rrrrr', window.Telegram);
-    if (tele) {
-      tele.ready();
-      const accountInfo = tele.initData;
-      const userInfo = JSON.parse(
-        '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-        function (key, value) {
-          return key === "" ? value : decodeURIComponent(value);
-        }
-      );
-      setTeleAccountInfo(userInfo);
-    }
-  }, []);
+  //   const tele = window.Telegram?.WebApp;
+  //   console.log('rrrrr', window.Telegram);
+  //   if (tele) {
+  //     tele.ready();
+  //     const accountInfo = tele.initData;
+  //     const userInfo = JSON.parse(
+  //       '{"' + accountInfo.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+  //       function (key, value) {
+  //         return key === "" ? value : decodeURIComponent(value);
+  //       }
+  //     );
+  //     setTeleAccountInfo(userInfo);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (teleAccountInfo) {
-      getUserInfo();
-      handleGetBalance();
-      getTrophy();
-    }
-  }, [teleAccountInfo]);
+  // useEffect(() => {
+  //   if (teleAccountInfo) {
+  //     getUserInfo();
+  //     handleGetBalance();
+  //     getTrophy();
+  //   }
+  // }, [teleAccountInfo]);
 
   // 2.
-  // const userId = 98798577877;
-  // useEffect(() => {
-  //   getUserInfo();
-  //   handleGetBalance();
-  //   getTrophy();
-  // }, []);
+  const userId = 98798577877;
+  useEffect(() => {
+    getUserInfo();
+    handleGetBalance();
+    getTrophy();
+  }, []);
 
   const getUserInfo = async () => {
     try {
