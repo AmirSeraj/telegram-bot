@@ -37,8 +37,12 @@ const TelegramProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
+  // 1.
+  const userId = JSON.parse(teleAccountInfo.user).id;
+
   useEffect(() => {
     const tele = window.Telegram.WebApp;
+    console.log(tele);
     if (tele) {
       tele.ready();
       const accountInfo = tele.initData;
@@ -51,24 +55,6 @@ const TelegramProvider = ({ children }) => {
       setTeleAccountInfo(userInfo);
     }
   }, []);
-
-  const userId = JSON.parse(teleAccountInfo.user).id;
-  const getUserInfo = async () => {
-    try {
-      const response = await fetch(user_info_path + userId, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const userInfo = await response.json();
-      setUser(userInfo);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (teleAccountInfo) {
       getUserInfo();
@@ -77,28 +63,31 @@ const TelegramProvider = ({ children }) => {
     }
   }, [teleAccountInfo]);
 
+
+  // 2.
+  // const userId = 98798577877;
   // useEffect(() => {
   //   getUserInfo();
   //   handleGetBalance();
   //   getTrophy();
   // }, []);
-
-  // const userId = 98798577877;
-  // const getUserInfo = async () => {
-  //   try {
-  //     const response = await fetch(user_info_path + userId, {
-  //       method: "GET",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const userInfo = await response.json();
-  //     setUser(userInfo);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  
+  
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch(user_info_path + userId, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const userInfo = await response.json();
+      setUser(userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleGetBalance = async () => {
     setLoading(true);

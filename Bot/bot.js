@@ -2,7 +2,7 @@ const { Telegraf } = require("telegraf");
 const TELEGRAM_BOT_TOKEN = "7181085962:AAFwtwS7S6BrmgWV3AICpgObAB5iGgPyUfA";
 const bot = new Telegraf(TELEGRAM_BOT_TOKEN);
 
-const web_link = "https://lovely-dango-aa3e18.netlify.app/";
+const web_link = "https://app.spxswap.com";
 
 bot.start((ctx) => {
   const id = ctx.msg.from.id;
