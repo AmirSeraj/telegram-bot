@@ -72,7 +72,7 @@ const StatsPage = () => {
               <Loading />
             ) : (
               <div className="mt-16 flex flex-col gap-2">
-                <Stats description={"Total Touches:"} total={595962583168} />
+                <Stats description={"Total Touches:"} total={stats.totalTouch} />
                 <Stats
                   description={"Total Players:"}
                   total={stats.totalPlayer}

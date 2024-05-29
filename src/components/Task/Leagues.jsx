@@ -5,7 +5,7 @@ import { useTelegram } from "../../hooks/useTelegram";
 import { FindIndexByName, images } from "../Trophy/data";
 
 /**PATH */
-const path = process.env.REACT_APP_URL + "api/landing/all-trophy";
+const path = process.env.REACT_APP_URL + "api/tasks/get-trophy";
 /**PATH */
 
 const Leagues = ({balance, setBalance}) => {
@@ -25,7 +25,7 @@ const Leagues = ({balance, setBalance}) => {
         },
       });
       const leagues = await response.json();
-      setTrophies(leagues?.data);
+      setTrophies(leagues);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -38,6 +38,10 @@ const Leagues = ({balance, setBalance}) => {
       getUserTrophies();
     }
   }, []);
+
+  const handleClick= () => {
+    setBalance(() => balance + Number(300))
+  }
 
   return (
     <div>
@@ -59,12 +63,12 @@ const Leagues = ({balance, setBalance}) => {
                 title={trophy.title}
                 price={Number(trophy.amount).toLocaleString()}
                 disabled={
-                  Number(user?.balance) > Number(trophy.amount) ? false : true
+                  Number(user?.balance) > Number(trophy?.amount) ? false : true
                 }
                 // present_value={Number(user?.balance)}
                 present_value={Number(balance)}
                 final_value={Number(trophy.amount)}
-                onCLick={(prevState) => setBalance(prevState + Number(trophy.amount))}
+                onCLick={handleClick}
               />
             );
           })}

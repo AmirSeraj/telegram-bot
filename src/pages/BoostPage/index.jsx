@@ -16,6 +16,7 @@ import Card from "../../components/Card";
 import Modal from "../../components/Modal";
 import "./Boosters.css";
 import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
+import Loading from "../../components/LoadingComponent/Loading";
 
 /**PATH */
 const path_multiTap = process.env.REACT_APP_URL + "api/landing/info-multi";
@@ -47,6 +48,10 @@ const BoostPage = () => {
   const [openEnergy, setOpenEnergy] = useState(false);
   const [openRecharging, setOpenRecharging] = useState(false);
   const [openBot, setOpenBot] = useState(false);
+  const [openGuru, setOpenGuru] = useState(false);
+
+  /**balance */
+  const [balance, setBalance] = useState(0);
 
   /**user */
   const user = useTelegram();
@@ -61,7 +66,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -84,7 +89,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -107,7 +112,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -130,7 +135,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -153,11 +158,11 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
-        console.log('resss',result);
+        console.log("resss", result);
         await user?.getBalance();
         await getMultiTap();
         setLoading_one(false);
@@ -178,7 +183,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -203,7 +208,7 @@ const BoostPage = () => {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
-            "info-user": user?.user?.uuid_name,
+            "info-user": user?.userTeleId,
           },
         });
         const result = await response.json();
@@ -219,13 +224,17 @@ const BoostPage = () => {
     }
   };
 
+  const handleTapingGuru = () => {
+    setOpenGuru(true);
+  };
+
   useEffect(() => {
-    user?.getBalance();
     getMultiTap();
     getEnergyLimit();
     getRecharging();
     getBot();
-  }, []);
+    setBalance(user?.balance);
+  }, [user?.balance]);
 
   return (
     <>
@@ -238,12 +247,16 @@ const BoostPage = () => {
           //   "radial-gradient(ellipse at 30% 40%, rgb(224, 224, 65) -27%, transparent 40%)"
           // }
         >
-          <Balance
-            border={true}
-            description={"Your Share balance"}
-            loading={loading_one}
-            balance={user?.balance}
-          />
+          {user?.loading ? (
+            <Loading />
+          ) : (
+            <Balance
+              border={true}
+              description={"Your Share balance"}
+              loading={loading_one}
+              balance={balance}
+            />
+          )}
           <div className="flex flex-col gap-2">
             <p className="text-2xl text-white mt-4 mb-2 font-bold">
               Your Daily boosters :
@@ -253,6 +266,7 @@ const BoostPage = () => {
                 icon={<FlameIcon size={28} color={"yellow"} />}
                 name={"Taping Guru"}
                 remain_num={1}
+                onClick={handleTapingGuru}
               />
               <DailyBooster
                 icon={<FlashIcon size={28} color={"yellow"} />}
@@ -327,7 +341,8 @@ const BoostPage = () => {
               boostTapInfo={`+${multiTap?.unit} per tap for each level.`}
               boostTokenRequired={multiTap?.amount}
               boostLevel={multiTap?.title}
-              balance={user?.balance}
+              balance={balance}
+              disabled={Number(balance) < Number(multiTap?.amount)}
               onClick={handleMulti}
             ></Modal>
           )}
@@ -346,6 +361,7 @@ const BoostPage = () => {
               boostLevel={energyLimit?.title}
               balance={user?.balance}
               onClick={handleEnergyLimit}
+              disabled={Number(balance) < Number(energyLimit?.amount)}
             ></Modal>
           )}
 
@@ -360,6 +376,27 @@ const BoostPage = () => {
                 "Increase amount of TAP you can earn per one tap."
               }
               boostTapInfo={`+${recharging?.unit} per tap for each level.`}
+              boostTokenRequired={recharging?.amount}
+              boostLevel={recharging?.title}
+              balance={balance}
+              disabled={Number(balance) < Number(recharging?.amount)}
+              onClick={handleRecharging}
+            ></Modal>
+          )}
+
+          {/* Guru&tank */}
+          {openGuru && (
+            <Modal
+              setOpenModal={setOpenGuru}
+              openModal={openGuru}
+              loading={false}
+              icon={<FlameIcon color={"yellow"} size={58} />}
+              boostTitle={"Taping Guru"}
+              boostDescription={
+                "Increase amount of TAP you can earn per one tap for 20 seconds."
+              }
+              boostTapInfo={`+45 per tap for each level.`}
+              tap_tank={true}
               boostTokenRequired={recharging?.amount}
               boostLevel={recharging?.title}
               balance={user?.balance}

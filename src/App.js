@@ -12,7 +12,8 @@ import { useEffect } from "react";
 import TrophyPage from "./pages/TrophyPage";
 
 // const socket = socketIO.connect("http://localhost:4000")
-const socket = socketIO.connect("http://192.168.88.168:8000");
+// const socket = socketIO.connect("http://192.168.88.168:8000");
+const socket = socketIO.connect("https://socket.spxswap.com");
 
 function App() {
   const location = useLocation();

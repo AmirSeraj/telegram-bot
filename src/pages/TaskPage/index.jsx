@@ -10,6 +10,10 @@ import { useTelegram } from "../../hooks/useTelegram";
 import LayoutLoading from "../../components/LoadingComponent/LayoutLoading";
 import Loading from "../../components/LoadingComponent/Loading";
 
+/**PATH */
+const get_user_tasks_path = process.env.REACT_APP_URL + "api/tasks/get-tasks";
+/**PATH */
+
 const TaskPage = () => {
   const [special, setSpecial] = useState(false);
   const [league, setLeague] = useState(false);
@@ -19,17 +23,19 @@ const TaskPage = () => {
   const [balance, setBalance] = useState(0);
   const user = useTelegram();
 
-  const getTasks_Specials = async () => {
+  const getUserTasks = async () => {
     setLoading(true);
     try {
-      const response = await fetch("fetch_get_all_tasks_specials", {
+      const response = await fetch(get_user_tasks_path, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
+          "info-user": user?.userTeleId,
         },
       });
       const tasks = await response.json();
+      console.log('eeee',tasks);
       setTasks(tasks);
       setLoading(false);
       return tasks;
@@ -41,9 +47,9 @@ const TaskPage = () => {
 
   useEffect(() => {
     setSpecial(true);
-    getTasks_Specials();
+    getUserTasks();
     setBalance(user?.balance);
-  }, []);
+  }, [user?.balance]);
 
   const handleActiveTab = (val) => {
     if (val === "special") {
@@ -99,7 +105,7 @@ const TaskPage = () => {
               </div>
               <div className="container--task">
                 {special && (
-                  <Special specials={tasks.specials} loadingCards={loading} />
+                  <Special specials={tasks} loadingCards={loading} />
                 )}
                 {league && (
                   <Leagues balance={balance} setBalance={setBalance} />
