@@ -40,8 +40,7 @@ const TelegramProvider = ({ children }) => {
   // 1.
   console.log("eeee", teleAccountInfo);
   const userId = JSON.parse(teleAccountInfo.user).id;
-  // const tele = window.Telegram.WebApp;
-  const tele = 'frefrefr';
+  const tele = window.Telegram.WebApp;
   console.log("tele", window.Telegram.WebApp);
 
   useEffect(() => {
