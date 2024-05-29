@@ -38,11 +38,12 @@ const TelegramProvider = ({ children }) => {
   }, [location.pathname]);
 
   // 1.
+  console.log('eeee',teleAccountInfo);
   const userId = JSON.parse(teleAccountInfo.user).id;
 
   useEffect(() => {
     const tele = window.Telegram.WebApp;
-    console.log(tele);
+    console.log('tele',tele);
     if (tele) {
       tele.ready();
       const accountInfo = tele.initData;
