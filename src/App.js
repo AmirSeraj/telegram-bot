@@ -11,11 +11,15 @@ import socketIO from "socket.io-client";
 import { useEffect } from "react";
 import TrophyPage from "./pages/TrophyPage";
 
+import { useInitData } from "@vkruglikov/react-telegram-web-app";
+
 // const socket = socketIO.connect("http://localhost:4000")
 // const socket = socketIO.connect("http://192.168.88.168:8000");
 const socket = socketIO.connect("https://socket.spxswap.com");
 
 function App() {
+  const [initDataUnsafe] = useInitData();
+
   const location = useLocation();
   const pathname = location.pathname.split("/")[1];
   useEffect(() => {
@@ -25,6 +29,7 @@ function App() {
   }, [pathname]);
   return (
     <div className="app">
+      <p>{initDataUnsafe?.user?.id}</p>
       <TelegramProvider>
         <Routes>
           <Route path="/ref" exact element={<RefPage />} />
