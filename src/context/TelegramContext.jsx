@@ -38,12 +38,12 @@ const TelegramProvider = ({ children }) => {
   }, [location.pathname]);
 
   // 1.
-  console.log('eeee',teleAccountInfo);
+  console.log("eeee", teleAccountInfo);
   const userId = JSON.parse(teleAccountInfo.user).id;
+  const tele = window.Telegram.WebApp;
+  console.log("tele", tele);
 
   useEffect(() => {
-    const tele = window.Telegram.WebApp;
-    console.log('tele',tele);
     if (tele) {
       tele.ready();
       const accountInfo = tele.initData;
@@ -64,7 +64,6 @@ const TelegramProvider = ({ children }) => {
     }
   }, [teleAccountInfo]);
 
-
   // 2.
   // const userId = 98798577877;
   // useEffect(() => {
@@ -72,8 +71,7 @@ const TelegramProvider = ({ children }) => {
   //   handleGetBalance();
   //   getTrophy();
   // }, []);
-  
-  
+
   const getUserInfo = async () => {
     try {
       const response = await fetch(user_info_path + userId, {
