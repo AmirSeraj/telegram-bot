@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CoinIcon from "../../components/Tap/CoinIcon";
 import ScoreBar from "../../components/Tap/ScoreBar";
 import bgImg from "../../assets/bg_images/bg-2.png";
@@ -134,7 +134,7 @@ const Home = ({ socket }) => {
         speed: Number(increaseSpeed?.unit),
         energy: Number(initialSpark),
       },
-      (data) => {}
+      () => {}
     );
   }, [
     user?.userTeleId,

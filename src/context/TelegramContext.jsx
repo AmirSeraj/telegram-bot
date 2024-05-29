@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import {createContext, useEffect, useRef, useState} from "react";
 import { useLocation } from "react-router-dom";
 
 const initialState = {
@@ -27,6 +27,7 @@ const TelegramProvider = ({ children }) => {
   const [loadingTrophy, setLoadingTrophy] = useState(initialState.loading);
   const [teleAccountInfo,setTeleAccountInfo] = useState(null)
   const location = useLocation();
+  const userId = useRef(null)
   useEffect(() => {
     setRootLoading(true);
     const timer = setTimeout(() => {
@@ -51,11 +52,9 @@ const TelegramProvider = ({ children }) => {
       setTeleAccountInfo(userInfo);
     }
   }, []);
-  let userId;
   useEffect(() => {
     if (teleAccountInfo) {
-      userId = JSON.parse(teleAccountInfo.user).id;
-      console.log('errr',typeof userId);
+      userId.current = JSON.parse(teleAccountInfo.user).id;
       const getUserInfo = async () => {
         try {
           const response = await fetch(
@@ -66,7 +65,7 @@ const TelegramProvider = ({ children }) => {
                 "Content-type": "application/json",
                 'Accept': "application/json",
               },
-              body: JSON.stringify({uuid_name : userId})
+              body: JSON.stringify({uuid_name : userId.current})
             }
           );
           const userInfo = await response.json();
@@ -80,10 +79,10 @@ const TelegramProvider = ({ children }) => {
     }
   }, [teleAccountInfo]);
 
-  // const userId = 98798577877;
+
   const getUserInfo = async () => {
     try {
-      const response = await fetch(user_info_path + userId, {
+      const response = await fetch(user_info_path + userId.current, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -104,7 +103,7 @@ const TelegramProvider = ({ children }) => {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
-          "info-user": userId,
+          "info-user": userId.current,
         },
       });
       const result = await response.json();
@@ -125,7 +124,7 @@ const TelegramProvider = ({ children }) => {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
-          "info-user": userId,
+          "info-user": userId.current,
         },
       });
       const result = await response.json();
@@ -152,7 +151,7 @@ const TelegramProvider = ({ children }) => {
     user_trophy: trophy?.title,
     loadingTrophy,
     level: user?.level,
-    userTeleId: userId
+    userTeleId: userId.current
   };
 
   return (

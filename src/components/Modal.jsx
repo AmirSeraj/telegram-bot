@@ -1,6 +1,5 @@
 import React from "react";
 import { Close } from "./Icons";
-import clsx from "clsx";
 import Loading from "./LoadingComponent/Loading";
 
 const Modal = ({

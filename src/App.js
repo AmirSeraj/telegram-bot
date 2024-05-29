@@ -8,6 +8,7 @@ import { TelegramProvider } from "./context/TelegramContext";
 import socketIO from "socket.io-client";
 import { useEffect } from "react";
 import TrophyPage from "./pages/TrophyPage";
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const socket = socketIO.connect("https://socket.spxswap.com");
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/trophy" exact element={<TrophyPage />} />
         </Routes>
       </TelegramProvider>
+      <SpeedInsights />
     </div>
   );
 }
